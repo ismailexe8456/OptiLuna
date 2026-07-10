@@ -15,6 +15,8 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>OptiLuna</AssemblyName>
+    <ApplicationIcon>OptiLuna.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

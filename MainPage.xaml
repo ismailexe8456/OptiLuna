@@ -14,7 +14,7 @@
             PaneDisplayMode="Left"
             IsBackButtonVisible="Collapsed"
             SelectionChanged="NavigationView_SelectionChanged"
-            Header="DTRL"
+            Header="OptiLuna"
             Background="Transparent">
 
             <NavigationView.AutoSuggestBox>
