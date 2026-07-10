@@ -8,11 +8,12 @@
     xmlns:local="using:Dtrl.Views"
     xmlns:services="using:Dtrl.Services"
     xmlns:models="using:Dtrl.Models"
+    xmlns:helpers="using:Dtrl.Helpers"
     mc:Ignorable="d"
     Background="Transparent">
 
     <Page.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" xmlns:helpers="using:Dtrl.Helpers"/>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid Margin="20" RowSpacing="20">

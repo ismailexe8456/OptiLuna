@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Dtrl"
+    xmlns:helpers="using:Dtrl.Helpers"
     RequestedTheme="Dark">
     <Application.Resources>
         <ResourceDictionary>
@@ -11,7 +12,7 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
 
-            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" xmlns:helpers="using:Dtrl.Helpers" />
+            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
             <!-- ═══════════════════════════════════════════ -->
             <!--  DTRL DARK THEME — VTRL-Inspired Palette   -->
