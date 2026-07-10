@@ -8,7 +8,7 @@
     xmlns:local="using:Dtrl.Views"
     xmlns:services="using:Dtrl.Services"
     xmlns:models="using:Dtrl.Models"
-    xmlns:root="using:Dtrl"
+    xmlns:root="using:Dtrl;assembly=OptiLuna"
     mc:Ignorable="d"
     Background="Transparent">
 
