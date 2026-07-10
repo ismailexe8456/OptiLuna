@@ -12,10 +12,6 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Page.Resources>
-        <root:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Page.Resources>
-
     <Grid Margin="20" RowSpacing="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -182,7 +178,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Applied indicator bar -->
-                                    <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind IsApplied, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind AppliedVisibility, Mode=OneWay}"/>
 
                                     <Grid Grid.Column="1" ColumnSpacing="16">
                                         <Grid.ColumnDefinitions>

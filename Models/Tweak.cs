@@ -35,7 +35,9 @@ public partial class Tweak : ObservableObject
 
     // Dynamic state
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(AppliedVisibility))]
     private bool _isApplied;
 
     public Microsoft.UI.Xaml.Visibility RestartVisibility => RestartRequired ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+    public Microsoft.UI.Xaml.Visibility AppliedVisibility => IsApplied ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 }

@@ -7,13 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:Dtrl.Views"
     xmlns:models="using:Dtrl.Models"
-    xmlns:root="using:Dtrl;assembly=OptiLuna"
     mc:Ignorable="d"
     Background="Transparent">
-
-    <Page.Resources>
-        <root:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Page.Resources>
 
     <Grid Margin="20" RowSpacing="16">
         <Grid.RowDefinitions>
@@ -121,7 +116,7 @@
                             </Grid.ColumnDefinitions>
 
                             <!-- Applied indicator bar -->
-                            <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind IsApplied, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind AppliedVisibility, Mode=OneWay}"/>
 
                             <Grid Grid.Column="1" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
