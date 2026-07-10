@@ -16,6 +16,8 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private string _selectedTheme = "Dark"; // Default to dark
 
+    public System.Collections.Generic.List<string> Themes { get; } = new() { "Dark", "Light", "System Default" };
+
     [ObservableProperty]
     private bool _isSafeModeEnabled = true;
 

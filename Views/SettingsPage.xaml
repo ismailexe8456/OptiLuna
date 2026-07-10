@@ -38,11 +38,7 @@
                         <TextBlock Text="Adjust display colors. Supports Dark Mode (Default), Light, or System Preferences." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                     </StackPanel>
                     
-                    <ComboBox SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150">
-                        <x:String>Dark</x:String>
-                        <x:String>Light</x:String>
-                        <x:String>System Default</x:String>
-                    </ComboBox>
+                    <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"/>
                 </Grid>
 
                 <Border Height="1" Background="{StaticResource DtrlCardBorderBrush}"/>
