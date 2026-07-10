@@ -37,7 +37,7 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
+                            <DataTemplate>
                                 <Button 
                                     Content="{Binding}" 
                                     Click="CategoryChip_Click"

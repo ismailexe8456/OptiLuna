@@ -74,8 +74,8 @@
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{x:Bind ViewModel.SelectedProfileTweakNames, Mode=OneWay}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <TextBlock Text="{x:Bind}" Style="{StaticResource BodyTextBlockStyle}" Margin="0,4"/>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Style="{StaticResource BodyTextBlockStyle}" Margin="0,4"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

@@ -34,9 +34,18 @@ public partial class Tweak : ObservableObject
     public string ShellUndo { get; set; } = string.Empty;
 
     // Dynamic state
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(AppliedVisibility))]
     private bool _isApplied;
+    public bool IsApplied
+    {
+        get => _isApplied;
+        set
+        {
+            if (SetProperty(ref _isApplied, value))
+            {
+                OnPropertyChanged(nameof(AppliedVisibility));
+            }
+        }
+    }
 
     public Microsoft.UI.Xaml.Visibility RestartVisibility => RestartRequired ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
     public Microsoft.UI.Xaml.Visibility AppliedVisibility => IsApplied ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
