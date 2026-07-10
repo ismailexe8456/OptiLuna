@@ -134,7 +134,7 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" Spacing="2">
                                         <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                                        <TextBlock Text="{x:Bind Path}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                                        <TextBlock Text="{x:Bind FilePath}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                                     </StackPanel>
                                     <TextBlock Grid.Column="1" Text="Large Size" Style="{StaticResource BodyStrongTextBlockStyle}" VerticalAlignment="Center"/>
                                 </Grid>
@@ -162,7 +162,7 @@
                                     <ItemsControl ItemsSource="{x:Bind Files}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate x:DataType="models:DiskItem">
-                                                <TextBlock Text="{x:Bind Path}" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,2,0,2"/>
+                                                 <TextBlock Text="{x:Bind FilePath}" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,2,0,2"/>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

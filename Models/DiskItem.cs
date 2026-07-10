@@ -16,4 +16,6 @@ public class DiskItem
     public double Height { get; set; }
     
     public List<DiskItem> Children { get; set; } = new();
+
+    public string FilePath => Path;
 }
