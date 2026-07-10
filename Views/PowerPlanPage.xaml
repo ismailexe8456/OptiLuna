@@ -7,12 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:Dtrl.Views"
     xmlns:models="using:Dtrl.Models"
-    xmlns:helpers="using:Dtrl.Helpers"
+    xmlns:root="using:Dtrl"
     mc:Ignorable="d"
     Background="Transparent">
 
     <Page.Resources>
-        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <root:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid Margin="20" RowSpacing="16">
