@@ -116,7 +116,7 @@
                             </Grid.ColumnDefinitions>
 
                             <!-- Applied indicator bar -->
-                            <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind local:TweaksPage.GetVisibility(IsApplied), Mode=OneWay}"/>
+                            <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind IsApplied, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                             <Grid Grid.Column="1" ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>

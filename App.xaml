@@ -11,6 +11,8 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
 
+            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" xmlns:helpers="using:Dtrl.Helpers" />
+
             <!-- ═══════════════════════════════════════════ -->
             <!--  DTRL DARK THEME — VTRL-Inspired Palette   -->
             <!-- ═══════════════════════════════════════════ -->
