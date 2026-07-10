@@ -17,9 +17,9 @@ public partial class ProfilesViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ProfilePanelVisibility))]
-    private ProfileModel? _selectedProfile;
+    private ProfileModel _selectedProfile = new();
 
-    public Microsoft.UI.Xaml.Visibility ProfilePanelVisibility => SelectedProfile != null ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+    public Microsoft.UI.Xaml.Visibility ProfilePanelVisibility => SelectedProfile != null && !string.IsNullOrEmpty(SelectedProfile.Name) ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -52,10 +52,10 @@ public partial class ProfilesViewModel : ObservableObject
         }
     }
 
-    partial void OnSelectedProfileChanged(ProfileModel? value)
+    partial void OnSelectedProfileChanged(ProfileModel value)
     {
         SelectedProfileTweakNames.Clear();
-        if (value == null) return;
+        if (value == null || string.IsNullOrEmpty(value.Name)) return;
 
         var allTweaks = _tweakService.GetTweaks();
         foreach (var id in value.EnabledTweakIds)
