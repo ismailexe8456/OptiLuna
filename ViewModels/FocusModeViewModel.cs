@@ -16,7 +16,7 @@ public partial class FocusModeViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(IsFocusInactive))]
     private bool _isFocusActive;
 
-    public bool IsFocusInactive => !_isFocusActive;
+    public bool IsFocusInactive => !IsFocusActive;
 
     [ObservableProperty]
     private string _timeRemainingText = "25:00";
