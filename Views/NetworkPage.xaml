@@ -11,6 +11,10 @@
     mc:Ignorable="d"
     Background="Transparent">
 
+    <Page.Resources>
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" xmlns:helpers="using:Dtrl.Helpers"/>
+    </Page.Resources>
+
     <Grid Margin="20" RowSpacing="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
