@@ -59,7 +59,7 @@ public sealed partial class TweaksPage : Page
         }
     }
 
-    private void UpdateChipSelectionVisuals(ItemsControl itemsControl, Button selectedButton)
+    private void UpdateChipSelectionVisuals(ItemsControl itemsControl, Button? selectedButton)
     {
         for (int i = 0; i < itemsControl.Items.Count; i++)
         {
@@ -86,7 +86,7 @@ public sealed partial class TweaksPage : Page
         }
     }
 
-    private T FindParent<T>(DependencyObject child) where T : DependencyObject
+    private T? FindParent<T>(DependencyObject child) where T : DependencyObject
     {
         DependencyObject parentObject = VisualTreeHelper.GetParent(child);
         if (parentObject == null) return null;

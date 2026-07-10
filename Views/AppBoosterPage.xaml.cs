@@ -16,10 +16,6 @@ public sealed partial class AppBoosterPage : Page
         ViewModel = App.Services.GetRequiredService<AppBoosterViewModel>();
     }
 
-    public static Visibility GetEmptyStateVisibility(int count)
-    {
-        return count == 0 ? Visibility.Visible : Visibility.Collapsed;
-    }
 
     private async void BoostButton_Click(object sender, RoutedEventArgs e)
     {

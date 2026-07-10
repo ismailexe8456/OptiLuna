@@ -37,6 +37,8 @@ public partial class AppBoosterViewModel : ObservableObject
         LoadCustomGames();
     }
 
+    public Microsoft.UI.Xaml.Visibility DetectedGamesEmptyVisibility => DetectedGames.Count == 0 ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
     public void RefreshState()
     {
         IsBoostActive = _boosterService.IsBoostActive;
@@ -48,6 +50,7 @@ public partial class AppBoosterViewModel : ObservableObject
         {
             DetectedGames.Add(g);
         }
+        OnPropertyChanged(nameof(DetectedGamesEmptyVisibility));
     }
 
     private void LoadCustomGames()

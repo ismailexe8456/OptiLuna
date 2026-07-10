@@ -73,7 +73,7 @@
                     </ListView>
 
                     <!-- Empty state -->
-                    <TextBlock Grid.Row="1" Text="No supported games detected. Launch a game or add its executable name to Custom Games below." Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Visibility="{x:Bind local:AppBoosterPage.GetEmptyStateVisibility(ViewModel.DetectedGames.Count), Mode=OneWay}"/>
+                    <TextBlock Grid.Row="1" Text="No supported games detected. Launch a game or add its executable name to Custom Games below." Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Visibility="{x:Bind ViewModel.DetectedGamesEmptyVisibility, Mode=OneWay}"/>
 
                     <Button Grid.Row="2" Content="Scan for Running Games" Command="{x:Bind ViewModel.RefreshGamesCommand}" CornerRadius="8" Padding="16,8" HorizontalAlignment="Stretch"/>
                 </Grid>
