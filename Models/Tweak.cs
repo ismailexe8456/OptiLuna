@@ -40,4 +40,7 @@ public partial class Tweak : ObservableObject
 
     public Microsoft.UI.Xaml.Visibility RestartVisibility => RestartRequired ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
     public Microsoft.UI.Xaml.Visibility AppliedVisibility => IsApplied ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public string RiskText => Risk.ToString();
+    public string CategoryText => Category.ToString();
 }

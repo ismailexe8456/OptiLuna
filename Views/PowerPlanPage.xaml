@@ -59,7 +59,7 @@
                                     <StackPanel Orientation="Horizontal" Spacing="8">
                                         <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                                         <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorNeutralBrush}" VerticalAlignment="Center">
-                                            <TextBlock Text="{x:Bind Risk}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                            <TextBlock Text="{x:Bind RiskText}" Style="{StaticResource CaptionTextBlockStyle}"/>
                                         </Border>
                                     </StackPanel>
                                     <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
