@@ -50,7 +50,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{x:Bind Date}" Style="{StaticResource BodyTextBlockStyle}"/>
                                         <!-- Boot time -->
-                                        <TextBlock Grid.Column="1" Text="{x:Bind BootTimeSeconds}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="{x:Bind BootTimeText}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

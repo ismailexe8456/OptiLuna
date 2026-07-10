@@ -39,4 +39,6 @@ public class BootTimeEntry
 {
     public string Date { get; set; } = string.Empty;
     public double BootTimeSeconds { get; set; }
+
+    public string BootTimeText => $"{BootTimeSeconds:F2}s";
 }
