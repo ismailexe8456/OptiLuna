@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Dtrl.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Dtrl.Views"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Margin="20" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Application Settings" Style="{StaticResource TitleTextBlockStyle}" />
+
+        <Border Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1" VerticalAlignment="Top">
+            <StackPanel Spacing="20">
+                
+                <!-- Safe mode toggle -->
+                <Grid>
+                    <StackPanel Spacing="4" Margin="0,0,100,0">
+                        <TextBlock Text="Enable Tweak Safe Mode (Recommended)" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <TextBlock Text="Hides or locks registry tweaks categorized as Dangerous. Requires explicit developer validation overrides." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsSafeModeEnabled, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+
+                <Border Height="1" Background="{StaticResource DtrlCardBorderBrush}"/>
+
+                <!-- Theme Selection -->
+                <Grid>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Application Theme" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <TextBlock Text="Adjust display colors. Supports Dark Mode (Default), Light, or System Preferences." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                    </StackPanel>
+                    
+                    <ComboBox SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150">
+                        <x:String>Dark</x:String>
+                        <x:String>Light</x:String>
+                        <x:String>System Default</x:String>
+                    </ComboBox>
+                </Grid>
+
+                <Border Height="1" Background="{StaticResource DtrlCardBorderBrush}"/>
+
+                <!-- App version and updates -->
+                <Grid>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Check for System Updates" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.AppVersion, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.UpdateStatusText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlAccentBrightBrush}"/>
+                    </StackPanel>
+                    <Button Content="Check Updates" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

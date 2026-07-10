@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Dtrl.Views.TweaksPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Dtrl.Views"
+    xmlns:models="using:Dtrl.Models"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Margin="20" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Filters header panel -->
+        <Border Grid.Row="0" CornerRadius="12" Padding="16" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" PlaceholderText="Search 500+ tweaks..." Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" TextChanged="SearchBox_TextChanged"/>
+
+                <ComboBox Grid.Column="1" Header="Category" ItemsSource="{x:Bind ViewModel.Categories}" SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}" SelectionChanged="Filter_SelectionChanged"/>
+
+                <ComboBox Grid.Column="2" Header="Risk Profile" ItemsSource="{x:Bind ViewModel.RiskLevels}" SelectedItem="{x:Bind ViewModel.SelectedRisk, Mode=TwoWay}" SelectionChanged="Filter_SelectionChanged"/>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                    <Button Content="Apply Safe" Command="{x:Bind ViewModel.ApplyAllSafeCommand}" Style="{StaticResource AccentButtonStyle}" CornerRadius="8" Padding="16,8"/>
+                    <Button Content="Revert All" Command="{x:Bind ViewModel.RevertAllCommand}" CornerRadius="8" Padding="16,8"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Tweak List -->
+        <ListView
+            Grid.Row="1"
+            x:Name="TweaksListView"
+            ItemsSource="{x:Bind ViewModel.DisplayedTweaks, Mode=OneWay}"
+            SelectionMode="Single"
+            Padding="0,0,8,0">
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Tweak">
+                    <Border Margin="0,4" CornerRadius="10" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1" HorizontalAlignment="Stretch">
+                        <Grid ColumnSpacing="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Spacing="4">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                                    <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorNeutralBrush}" VerticalAlignment="Center">
+                                        <TextBlock Text="{x:Bind Category}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                    </Border>
+                                    <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorAttentionBrush}" VerticalAlignment="Center">
+                                        <TextBlock Text="{x:Bind Risk}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{x:Bind EstimatedImpact}" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4" Margin="20,0">
+                                <TextBlock Text="Restart Required" Foreground="{StaticResource DtrlCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}" Visibility="{x:Bind RestartVisibility, Mode=OneWay}"/>
+                            </StackPanel>
+
+                            <ToggleSwitch
+                                Grid.Column="2"
+                                IsOn="{x:Bind IsApplied, Mode=TwoWay}"
+                                Toggled="TweakToggle_Toggled"
+                                VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Status Footer -->
+        <Grid Grid.Row="2">
+            <TextBlock Text="Use caution when altering advanced or dangerous settings. Automatic restore points will be attempted before execution." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}"/>
+            <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" HorizontalAlignment="Right" Width="20" Height="20"/>
+        </Grid>
+    </Grid>
+</Page>

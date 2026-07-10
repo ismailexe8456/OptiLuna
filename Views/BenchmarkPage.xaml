@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Dtrl.Views.BenchmarkPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Dtrl.Views"
+    xmlns:models="using:Dtrl.Models"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid Margin="20" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <TextBlock Text="Performance Benchmarks" Style="{StaticResource TitleTextBlockStyle}" />
+            <Button Content="Run Benchmark Tests" Command="{x:Bind ViewModel.RunBenchmarkSuiteCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Right"/>
+        </Grid>
+
+        <!-- Progress panel -->
+        <Border Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1" Visibility="{x:Bind ViewModel.ProgressVisibility, Mode=OneWay}">
+            <StackPanel Spacing="10">
+                <TextBlock Text="{x:Bind ViewModel.StatusText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                <ProgressBar Value="{x:Bind ViewModel.CpuProgressValue, Mode=OneWay}" Maximum="100"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Comparisons Panel -->
+        <Grid Grid.Row="2" ColumnSpacing="16" Visibility="{x:Bind ViewModel.ResultsVisibility, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Current results details -->
+            <Border Grid.Column="0" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Latest Run Results" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="CPU Arithmetic Operations" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.CurrentResult.CpuScore, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Memory Bandwidth Speed" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.CurrentResult.MemoryBandwidthMbS, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}"/>
+                        <TextBlock Text="MB/s" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                    </StackPanel>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="4">
+                            <TextBlock Text="Disk Read" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="{x:Bind ViewModel.CurrentResult.DiskReadMbS, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <TextBlock Text="MB/s" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="4">
+                            <TextBlock Text="Disk Write" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="{x:Bind ViewModel.CurrentResult.DiskWriteMbS, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <TextBlock Text="MB/s" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Measured Boot Time" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.CurrentResult.BootTimeSeconds, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                        <TextBlock Text="Seconds" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Set as Baseline (Before)" Command="{x:Bind ViewModel.SetAsBeforeBaselineCommand}"/>
+                        <Button Content="Set as Optimized (After)" Command="{x:Bind ViewModel.SetAsAfterOptimizedCommand}" Style="{StaticResource AccentButtonStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Before vs After compare panel -->
+            <Border Grid.Column="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Before vs. After Optimization Scoreboard" Style="{StaticResource SubtitleTextBlockStyle}"/>
+
+                    <!-- CPU Compare -->
+                    <Grid Padding="0,8">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="CPU Performance" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <Grid>
+                                <TextBlock Text="{x:Bind ViewModel.BeforeResult.CpuScore, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                                <TextBlock Text="➔" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{x:Bind ViewModel.AfterResult.CpuScore, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Memory Compare -->
+                    <Grid Padding="0,8">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="Memory Bandwidth Throughput" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <Grid>
+                                <TextBlock Text="{x:Bind ViewModel.BeforeResult.MemoryBandwidthMbS, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                                <TextBlock Text="➔" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{x:Bind ViewModel.AfterResult.MemoryBandwidthMbS, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Boot Time Compare -->
+                    <Grid Padding="0,8">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="Startup Boot Speed (Lower is better)" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            <Grid>
+                                <TextBlock Text="{x:Bind ViewModel.BeforeResult.BootTimeSeconds, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                                <TextBlock Text="➔" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{x:Bind ViewModel.AfterResult.BootTimeSeconds, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

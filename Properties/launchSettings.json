@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Dtrl (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Dtrl (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
