@@ -102,7 +102,7 @@ public class SystemInfoService : ISystemInfoService
                         FriendlyName = obj["FriendlyName"]?.ToString() ?? string.Empty,
                         Provider = obj["ProviderName"]?.ToString() ?? "Unknown",
                         DriverVersion = obj["DriverVersion"]?.ToString() ?? "Unknown",
-                        Date = driverDate
+                        DateText = driverDate
                     });
                 }
             }
@@ -236,7 +236,7 @@ public class SystemInfoService : ISystemInfoService
 
                         entries.Add(new BootTimeEntry
                         {
-                            Date = created.ToString("yyyy-MM-dd HH:mm"),
+                            DateText = created.ToString("yyyy-MM-dd HH:mm"),
                             BootTimeSeconds = bootTimeSec
                         });
                         count++;
@@ -250,7 +250,7 @@ public class SystemInfoService : ISystemInfoService
                 {
                     entries.Add(new BootTimeEntry
                     {
-                        Date = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm"),
+                        DateText = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd HH:mm"),
                         BootTimeSeconds = Math.Round(22.0 + (i * 0.8), 1)
                     });
                 }

@@ -14,7 +14,7 @@ public class DriverInfo
     public string FriendlyName { get; set; } = string.Empty;
     public string Provider { get; set; } = string.Empty;
     public string DriverVersion { get; set; } = string.Empty;
-    public string Date { get; set; } = string.Empty;
+    public string DateText { get; set; } = string.Empty;
 }
 
 public class ServiceGridInfo
@@ -37,7 +37,7 @@ public class RuntimeInfo
 
 public class BootTimeEntry
 {
-    public string Date { get; set; } = string.Empty;
+    public string DateText { get; set; } = string.Empty;
     public double BootTimeSeconds { get; set; }
 
     public string BootTimeText => $"{BootTimeSeconds:F2}s";

@@ -48,7 +48,7 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="{x:Bind Date}" Style="{StaticResource BodyTextBlockStyle}"/>
+                                        <TextBlock Grid.Column="0" Text="{x:Bind DateText}" Style="{StaticResource BodyTextBlockStyle}"/>
                                         <!-- Boot time -->
                                         <TextBlock Grid.Column="1" Text="{x:Bind BootTimeText}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
                                     </Grid>
@@ -124,7 +124,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0">
                                         <TextBlock Text="{x:Bind DriverVersion}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                                        <TextBlock Text="{x:Bind Date}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                                        <TextBlock Text="{x:Bind DateText}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
