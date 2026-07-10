@@ -40,6 +40,15 @@ public static class TweakRepository
         // 10. ADVANCED POLICIES (~30 tweaks)
         AddPolicyTweaks(tweaks);
 
+        // 11. NVIDIA OPTIMIZATIONS
+        AddNvidiaTweaks(tweaks);
+
+        // 12. LATENCY & INPUT RESPONSE
+        AddLatencyTweaks(tweaks);
+
+        // 13. POWER PLAN GRANULAR SETTINGS
+        AddPowerPlanTweaks(tweaks);
+
         return tweaks;
     }
 
@@ -795,7 +804,7 @@ public static class TweakRepository
 
     private static void AddNetworkTweaks(List<Tweak> list)
     {
-        // TCP Auto-Tuning
+        // 1. TCP Auto-Tuning
         list.Add(new Tweak
         {
             Id = "net_tcp_autotune",
@@ -809,7 +818,7 @@ public static class TweakRepository
             ShellUndo = "netsh int tcp set global autotuninglevel=disabled"
         });
 
-        // TCP Chimney Offload
+        // 2. TCP Chimney Offload
         list.Add(new Tweak
         {
             Id = "net_tcp_chimney",
@@ -823,42 +832,81 @@ public static class TweakRepository
             ShellUndo = "netsh int tcp set global chimney=disabled"
         });
 
-        // Disable NetBIOS over TCP/IP
+        // 3. Disable Nagle's Algorithm (TCP No Delay)
         list.Add(new Tweak
         {
-            Id = "net_disable_netbios",
-            Name = "Disable NetBIOS over TCP/IP",
-            Description = "Disables NetBIOS name resolution over TCP/IP, which is obsolete and a common network security vulnerability vector.",
+            Id = "net_nagle_algorithm",
+            Name = "Disable Nagle's Algorithm (TCP No Delay)",
+            Description = "Disables Nagle's delay algorithm to send small packets immediately without waiting, lowering latency in games.",
             Category = TweakCategory.Network,
             Risk = RiskLevel.Advanced,
-            EstimatedImpact = "Improves local network security, frees up adapter ports.",
+            EstimatedImpact = "Reduces ping and input delay in online games.",
             RegistryHive = "HKLM",
-            RegistryPath = @"SYSTEM\CurrentControlSet\Services\NetBT\Parameters",
-            RegistryValueName = "NoNameReleaseOnDemand",
+            RegistryPath = @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces",
+            RegistryValueName = "TcpAckFrequency",
             RegistryType = "DWord",
             ActiveValue = 1,
-            UndoValue = 0
+            UndoValue = 2
         });
 
-        // Programmatic padding to reach 50 tweaks
-        // We'll generate tweaks targeting different network registry configuration keys
-        for (int i = 1; i <= 47; i++)
+        // 4. Disable Large Send Offload (LSO)
+        list.Add(new Tweak
         {
-            list.Add(new Tweak
-            {
-                Id = $"net_pad_adapter_{i}",
-                Name = $"Optimize Network Adapter Buffer Parameter #{i}",
-                Description = $"Sets dynamic buffer size allocations on virtual socket interface #{i} to decrease processing overhead.",
-                Category = TweakCategory.Network,
-                Risk = RiskLevel.Advanced,
-                RegistryHive = "HKLM",
-                RegistryPath = $@"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces\Interface{i}",
-                RegistryValueName = "TcpWindowSize",
-                RegistryType = "DWord",
-                ActiveValue = 65535,
-                UndoValue = 0
-            });
-        }
+            Id = "net_disable_lso",
+            Name = "Disable Large Send Offload (LSO)",
+            Description = "Disables LSO to prevent the network adapter from aggregating packets, which can cause latency spikes and bufferbloat.",
+            Category = TweakCategory.Network,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Reduces micro-stuttering and ping spikes in multiplayer games.",
+            TargetType = "Shell",
+            ShellCommand = "powershell -Command \"Disable-NetAdapterLso -Name * -Confirm:$false\"",
+            ShellUndo = "powershell -Command \"Enable-NetAdapterLso -Name * -Confirm:$false\""
+        });
+
+        // 5. Disable QoS Limit Reservation
+        list.Add(new Tweak
+        {
+            Id = "net_disable_qos_limit",
+            Name = "Disable QoS Reservable Bandwidth Limit",
+            Description = "Forces Windows to release the default 20% reserved bandwidth limit, dedicating 100% bandwidth to active applications.",
+            Category = TweakCategory.Network,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Increases raw upload and download rates for downloads.",
+            RegistryHive = "HKLM",
+            RegistryPath = @"SOFTWARE\Policies\Microsoft\Windows\Psched",
+            RegistryValueName = "NonBestEffortLimit",
+            RegistryType = "DWord",
+            ActiveValue = 0,
+            UndoValue = 20
+        });
+
+        // 6. Netsh TCP ECN
+        list.Add(new Tweak
+        {
+            Id = "net_tcp_ecn",
+            Name = "Enable TCP Explicit Congestion Notification (ECN)",
+            Description = "Enables ECN to allow routers to report packet congestion without dropping packets.",
+            Category = TweakCategory.Network,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Lowers packet loss rates on congested networks.",
+            TargetType = "Shell",
+            ShellCommand = "netsh int tcp set global ecncapability=enabled",
+            ShellUndo = "netsh int tcp set global ecncapability=disabled"
+        });
+
+        // 7. Netsh TCP Congestion Provider (CUBIC)
+        list.Add(new Tweak
+        {
+            Id = "net_tcp_congestion",
+            Name = "Configure TCP Congestion Provider (CUBIC)",
+            Description = "Configures the Windows TCP stack to use the CUBIC congestion algorithm for better high-speed link utilization.",
+            Category = TweakCategory.Network,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Improves overall download stability.",
+            TargetType = "Shell",
+            ShellCommand = "netsh int tcp set supplemental template=internet congestionprovider=cubic",
+            ShellUndo = "netsh int tcp set supplemental template=internet congestionprovider=default"
+        });
     }
 
     private static void AddVisualEffectsTweaks(List<Tweak> list)
@@ -955,5 +1003,305 @@ public static class TweakRepository
                 UndoValue = 0
             });
         }
+    }
+
+    private static void AddNvidiaTweaks(List<Tweak> list)
+    {
+        list.Add(new Tweak
+        {
+            Id = "nv_powermizer_enable",
+            Name = "Enable NVIDIA PowerMizer Performance Mode",
+            Description = "Enables PowerMizer performance state management on NVIDIA graphics adapters, preventing clock drops.",
+            Category = TweakCategory.Nvidia,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Stabilizes framerates, prevents power throttling stuttering.",
+            RegistryHive = "HKLM",
+            RegistryPath = @"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000",
+            RegistryValueName = "PowerMizerEnable",
+            RegistryType = "DWord",
+            ActiveValue = 1,
+            UndoValue = 0
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "nv_perf_level_src",
+            Name = "Force NVIDIA Max Performance Power State",
+            Description = "Forces the GPU to stay in high performance P-states when plugged into AC power.",
+            Category = TweakCategory.Nvidia,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Improves GPU clocks stability.",
+            RegistryHive = "HKLM",
+            RegistryPath = @"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}\0000",
+            RegistryValueName = "PerfLevelSrc",
+            RegistryType = "DWord",
+            ActiveValue = 13090, // 0x3322
+            UndoValue = 13107 // 0x3333
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "nv_shader_cache_unlimit",
+            Name = "NVIDIA Shader Cache Size: Unlimited",
+            Description = "Configures the NVIDIA driver shader cache to unlimited space to avoid re-compiling shaders dynamically during game load.",
+            Category = TweakCategory.Nvidia,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Significantly reduces shader compilation stutter in games like Apex/CS2.",
+            RegistryHive = "HKCU",
+            RegistryPath = @"Software\NVIDIA Corporation\Global\NVTweak",
+            RegistryValueName = "ShaderCacheSize",
+            RegistryType = "DWord",
+            ActiveValue = -1, // 0xFFFFFFFF
+            UndoValue = 10240 // 10GB default
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "nv_pre_rendered_frames",
+            Name = "NVIDIA Limit Pre-Rendered Frames",
+            Description = "Limits the maximum number of pre-rendered frames prepared by the CPU before dispatching to the GPU.",
+            Category = TweakCategory.Nvidia,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Lowers mouse cursor input latency in heavy GPU scenarios.",
+            RegistryHive = "HKCU",
+            RegistryPath = @"Software\NVIDIA Corporation\Global\NVTweak",
+            RegistryValueName = "MaxPreRenderedFrames",
+            RegistryType = "DWord",
+            ActiveValue = 1,
+            UndoValue = 3
+        });
+    }
+
+    private static void AddLatencyTweaks(List<Tweak> list)
+    {
+        list.Add(new Tweak
+        {
+            Id = "lat_disable_hpet",
+            Name = "Disable High Precision Event Timer (HPET)",
+            Description = "Instructs the Windows boot manager to bypass the hardware High Precision Event Timer, using the lower-overhead TSC timer instead.",
+            Category = TweakCategory.Latency,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Improves overall frame pacing and DPC latency.",
+            TargetType = "Shell",
+            ShellCommand = "bcdedit /set useplatformclock false",
+            ShellUndo = "bcdedit /deletevalue useplatformclock"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "lat_disable_dyn_tick",
+            Name = "Disable Windows Dynamic Tick",
+            Description = "Stops the system processor from stopping/slowing its clock tick interrupts during idle power saving cycles.",
+            Category = TweakCategory.Latency,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Reduces timer interrupt start/stop lag for gaming.",
+            TargetType = "Shell",
+            ShellCommand = "bcdedit /set disabledynamictick yes",
+            ShellUndo = "bcdedit /deletevalue disabledynamictick"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "lat_use_platform_tick",
+            Name = "Enforce Platform Tick (Timer Consistency)",
+            Description = "Forces the Windows timer interrupt clock rate to stay locked with the motherboard platform clock tick rather than synthetic virtualization counters.",
+            Category = TweakCategory.Latency,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Improves execution timer resolution consistency.",
+            TargetType = "Shell",
+            ShellCommand = "bcdedit /set useplatformtick yes",
+            ShellUndo = "bcdedit /deletevalue useplatformtick"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "lat_mouse_accel",
+            Name = "Disable Mouse Pointer Acceleration",
+            Description = "Sets mouse curves and speeds to 1:1, removing system pointer speed scaling.",
+            Category = TweakCategory.Latency,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Provides muscle memory consistency in competitive FPS games.",
+            RegistryHive = "HKCU",
+            RegistryPath = @"Control Panel\Mouse",
+            RegistryValueName = "MouseSpeed",
+            RegistryType = "String",
+            ActiveValue = "0",
+            UndoValue = "1"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "lat_keyboard_speed",
+            Name = "Optimize Keyboard Response and Delay",
+            Description = "Configures standard Windows registry parameters to repeat keyboard press notifications instantly with minimal key delay.",
+            Category = TweakCategory.Latency,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Speeds up key double-tapping response.",
+            RegistryHive = "HKCU",
+            RegistryPath = @"Control Panel\Keyboard",
+            RegistryValueName = "KeyboardSpeed",
+            RegistryType = "String",
+            ActiveValue = "31",
+            UndoValue = "28"
+        });
+    }
+
+    private static void AddPowerPlanTweaks(List<Tweak> list)
+    {
+        list.Add(new Tweak
+        {
+            Id = "power_idle_performance",
+            Name = "Enable Ultimate/High Performance Plan",
+            Description = "Enforces the Ultimate Performance or High Performance power plan as active.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Ensures CPU is not throttled under workload.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c", // High Performance
+            ShellUndo = "powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e"  // Balanced
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_disable_throttle",
+            Name = "Disable Processor Throttle States",
+            Description = "Disables processor performance throttle states to prevent core clock frequency drops.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Improves responsiveness, keeps processor clocks stable.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 ee12f28f-7b70-4a47-a9d5-27847d67ffca 0; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 ee12f28f-7b70-4a47-a9d5-27847d67ffca 1; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_hardware_pstates",
+            Name = "Enable Hardware Autonomous P-States",
+            Description = "Enables hardware-controlled autonomous processor performance states.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Optimizes core state transition latency.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 855a62e0-ee34-417b-afda-665636c700f2 1; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 855a62e0-ee34-417b-afda-665636c700f2 0; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_turbo_boost",
+            Name = "Enable Processor Turbo Boost",
+            Description = "Enables CPU core turbo boosting (Intel Turbo Boost / AMD Core Performance Boost).",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Enables processor max boost frequencies under loads.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 be337238-0d82-4146-a960-4f3749d470c7 2; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 be337238-0d82-4146-a960-4f3749d470c7 0; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_parking_intel",
+            Name = "Disable Intel CPU Core Parking",
+            Description = "Prevents Windows from parking logical cores, keeping them ready for thread scheduling.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Improves execution latency on multi-core Intel chips.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 0cc5d639-28d6-4d02-abf0-ac9b49f85387 100; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 0cc5d639-28d6-4d02-abf0-ac9b49f85387 10; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_parking_amd",
+            Name = "Disable AMD CPU Core Parking",
+            Description = "Adjusts core parking parameters to disable parking on AMD Ryzen chips.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Prevents inter-CCX thread scheduling delay on Ryzen chips.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 0cc5d639-28d6-4d02-abf0-ac9b49f85387 100; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 0cc5d639-28d6-4d02-abf0-ac9b49f85387 10; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_disable_freq_scaling",
+            Name = "Disable Processor Frequency Scaling",
+            Description = "Enforces the CPU to run at its base/boost speed constantly without scaling down.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Dangerous,
+            EstimatedImpact = "Saves frequency transition lag, but increases idle power/temp.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 75b0eb1a-cc6f-46bc-8977-d8159d75c14e 0; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 75b0eb1a-cc6f-46bc-8977-d8159d75c14e 0; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_prefer_perf_cores",
+            Name = "Prefer Performance Cores (Intel Hybrid)",
+            Description = "Directs the thread scheduler to prioritize high-performance P-Cores over efficiency E-Cores.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Prevents games from running on low-speed efficiency cores.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 7f2f7318-c552-4468-8d54-a958fe21503e 0; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 54533251-82be-4824-96c1-47b60b740d00 7f2f7318-c552-4468-8d54-a958fe21503e 4; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_usb_selective_suspend",
+            Name = "Disable USB Selective Suspend",
+            Description = "Stops Windows from turning off connected USB ports dynamically to save power.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Prevents USB controller sleep latency, resolves mouse/keyboard disconnects.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b7bebba58c2e d86033cf-3786-4b0f-8a11-27650401770b 0; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b7bebba58c2e d86033cf-3786-4b0f-8a11-27650401770b 1; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_usb3_power_mgmt",
+            Name = "Disable USB 3 Link Power Management",
+            Description = "Disables power saving link management on USB 3.0 superspeed channels.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Stabilizes USB 3.0 storage devices throughput speeds.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b7bebba58c2e 48e6b7a6-50f0-4943-a1d8-6c54c77665f3 0; powercfg /reassociate",
+            ShellUndo = "powercfg /setacvalueindex SCHEME_CURRENT 2a737441-1930-4402-8d77-b7bebba58c2e 48e6b7a6-50f0-4943-a1d8-6c54c77665f3 2; powercfg /reassociate"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_monitor_timeout",
+            Name = "Keep Display On While Plugged In",
+            Description = "Prevents Windows from turning off the display monitor when idle on AC power.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Safe,
+            EstimatedImpact = "Keeps monitor on during long render/download sessions.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /change monitor-timeout-ac 0",
+            ShellUndo = "powercfg /change monitor-timeout-ac 15"
+        });
+
+        list.Add(new Tweak
+        {
+            Id = "power_disable_sleep",
+            Name = "Disable Sleep and Hibernation States",
+            Description = "Disables system sleep states and deletes the hibernation file (`hiberfil.sys`) to reclaim disk space.",
+            Category = TweakCategory.Performance,
+            Risk = RiskLevel.Advanced,
+            EstimatedImpact = "Frees up gigabytes of disk space equal to system RAM.",
+            TargetType = "Shell",
+            ShellCommand = "powercfg /hibernate off",
+            ShellUndo = "powercfg /hibernate on"
+        });
     }
 }

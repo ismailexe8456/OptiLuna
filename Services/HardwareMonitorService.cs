@@ -17,6 +17,7 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
     private Timer? _monitoringTimer;
     private Action<HardwareMetrics>? _updateCallback;
     private double _cachedTotalRamGb = 16.0;
+    private int _cachedRamSpeed = 3200;
     private string _cachedMotherboard = "Unknown";
     private string _cachedBios = "Unknown";
     private string _cachedOsName = "Windows 11";
@@ -94,6 +95,25 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
                         break;
                     }
                 }
+
+                // RAM Speed
+                using (var searcher = new ManagementObjectSearcher("SELECT Speed FROM Win32_PhysicalMemory"))
+                using (var collection = searcher.Get())
+                {
+                    foreach (var obj in collection)
+                    {
+                        var speedVal = obj["Speed"];
+                        if (speedVal != null)
+                        {
+                            int speed = Convert.ToInt32(speedVal);
+                            if (speed > 0)
+                            {
+                                _cachedRamSpeed = speed;
+                            }
+                            break;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -112,7 +132,8 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
                 BiosVersion = _cachedBios,
                 OsVersionName = _cachedOsName,
                 OsBuild = _cachedOsBuild,
-                RamTotal = _cachedTotalRamGb
+                RamTotal = _cachedTotalRamGb,
+                RamSpeed = _cachedRamSpeed
             };
 
             // CPU load

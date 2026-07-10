@@ -12,5 +12,7 @@ public enum TweakCategory
     WindowsUpdate,   // Windows update active hours, exclusion of driver updates, delivery optimization.
     Privacy,         // Diagnostic history, location permissions, background apps.
     Policies,        // General OS group policies mapped to registry values.
-    Debloat          // Debloating tasks (Widgets, OneDrive, UWP app removals).
+    Debloat,         // Debloating tasks (Widgets, OneDrive, UWP app removals).
+    Nvidia,          // NVIDIA specific optimizations.
+    Latency          // Latency and input response optimizations.
 }

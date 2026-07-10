@@ -19,25 +19,83 @@
 
         <!-- Filters header panel -->
         <Border Grid.Row="0" CornerRadius="12" Padding="16" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
-            <Grid ColumnSpacing="12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+            <StackPanel Spacing="12">
+                <!-- Search Box -->
+                <TextBox 
+                    x:Name="SearchBox"
+                    PlaceholderText="{x:Bind ViewModel.SearchPlaceholderText, Mode=OneTime}"
+                    Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" 
+                    TextChanged="SearchBox_TextChanged"
+                    HorizontalAlignment="Stretch"/>
 
-                <TextBox Grid.Column="0" PlaceholderText="Search 500+ tweaks..." Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" TextChanged="SearchBox_TextChanged"/>
+                <!-- Category chips scrollable row -->
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Enabled" VerticalScrollMode="Disabled">
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.Categories}" Loaded="ItemsControl_Loaded">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button 
+                                    Content="{x:Bind}" 
+                                    Click="CategoryChip_Click"
+                                    Style="{ThemeResource DefaultButtonStyle}"
+                                    CornerRadius="16" 
+                                    Padding="16,6"
+                                    Tag="{x:Bind}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
-                <ComboBox Grid.Column="1" Header="Category" ItemsSource="{x:Bind ViewModel.Categories}" SelectedItem="{x:Bind ViewModel.SelectedCategory, Mode=TwoWay}" SelectionChanged="Filter_SelectionChanged"/>
+                <!-- Secondary controls row -->
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <ComboBox Grid.Column="2" Header="Risk Profile" ItemsSource="{x:Bind ViewModel.RiskLevels}" SelectedItem="{x:Bind ViewModel.SelectedRisk, Mode=TwoWay}" SelectionChanged="Filter_SelectionChanged"/>
+                    <ComboBox Grid.Column="0" Header="Risk Profile" ItemsSource="{x:Bind ViewModel.RiskLevels}" SelectedItem="{x:Bind ViewModel.SelectedRisk, Mode=TwoWay}" SelectionChanged="Filter_SelectionChanged" Width="160"/>
 
-                <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
-                    <Button Content="Apply Safe" Command="{x:Bind ViewModel.ApplyAllSafeCommand}" Style="{StaticResource AccentButtonStyle}" CornerRadius="8" Padding="16,8"/>
-                    <Button Content="Revert All" Command="{x:Bind ViewModel.RevertAllCommand}" CornerRadius="8" Padding="16,8"/>
-                </StackPanel>
-            </Grid>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom">
+                        <Button Content="Apply Safe" Command="{x:Bind ViewModel.ApplyAllSafeCommand}" Style="{StaticResource AccentButtonStyle}" CornerRadius="8" Padding="16,8"/>
+                        <Button Content="Revert All" Command="{x:Bind ViewModel.RevertAllCommand}" CornerRadius="8" Padding="16,8"/>
+                    </StackPanel>
+
+                    <!-- Help link flyout -->
+                    <Button Grid.Column="3" Content="Need help with what to apply?" Style="{StaticResource TextButtonStyle}" VerticalAlignment="Bottom">
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel Spacing="12" Width="300">
+                                    <TextBlock Text="OptiLuna Risk Levels" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlAccentBrightBrush}"/>
+                                    <TextBlock Text="Every tweak in the suite is tagged by safety and system compatibility:" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap"/>
+                                    <Border Height="1" Background="{StaticResource DtrlCardBorderBrush}"/>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="🟢 Safe" FontWeight="Bold" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                                        <TextBlock Text="Highly recommended. Zero or negligible impact on app compatibility." Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="🟡 Advanced" FontWeight="Bold" Foreground="{StaticResource DtrlCautionBrush}"/>
+                                        <TextBlock Text="Modifies standard system behavior. Recommended for advanced configurations." Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="🔴 Dangerous" FontWeight="Bold" Foreground="{StaticResource DtrlDangerBrush}"/>
+                                        <TextBlock Text="High risk of compatibility issues. Requires careful validation before use." Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="🔵 Experimental" FontWeight="Bold" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                        <TextBlock Text="Requires manual review. Verify registry keys/settings before executing." Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+            </StackPanel>
         </Border>
 
         <!-- Main Tweak List -->
@@ -51,36 +109,46 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Tweak">
                     <Border Margin="0,4" CornerRadius="10" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1" HorizontalAlignment="Stretch">
-                        <Grid ColumnSpacing="16">
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Spacing="4">
-                                <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
-                                    <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorNeutralBrush}" VerticalAlignment="Center">
-                                        <TextBlock Text="{x:Bind Category}" Style="{StaticResource CaptionTextBlockStyle}"/>
-                                    </Border>
-                                    <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorAttentionBrush}" VerticalAlignment="Center">
-                                        <TextBlock Text="{x:Bind Risk}" Style="{StaticResource CaptionTextBlockStyle}"/>
-                                    </Border>
+                            <!-- Applied indicator bar -->
+                            <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind IsApplied, Mode=OneWay, Converter={StaticResource local:TweaksPage.GetVisibility}}"/>
+
+                            <Grid Grid.Column="1" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Spacing="4">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                                        <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorNeutralBrush}" VerticalAlignment="Center">
+                                            <TextBlock Text="{x:Bind Category}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                        </Border>
+                                        <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorAttentionBrush}" VerticalAlignment="Center">
+                                            <TextBlock Text="{x:Bind Risk}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{x:Bind EstimatedImpact}" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
                                 </StackPanel>
-                                <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
-                                <TextBlock Text="{x:Bind EstimatedImpact}" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
-                            </StackPanel>
 
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4" Margin="20,0">
-                                <TextBlock Text="Restart Required" Foreground="{StaticResource DtrlCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}" Visibility="{x:Bind RestartVisibility, Mode=OneWay}"/>
-                            </StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4" Margin="20,0">
+                                    <TextBlock Text="Restart Required" Foreground="{StaticResource DtrlCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}" Visibility="{x:Bind RestartVisibility, Mode=OneWay}"/>
+                                </StackPanel>
 
-                            <ToggleSwitch
-                                Grid.Column="2"
-                                IsOn="{x:Bind IsApplied, Mode=TwoWay}"
-                                Toggled="TweakToggle_Toggled"
-                                VerticalAlignment="Center"/>
+                                <ToggleSwitch
+                                    Grid.Column="2"
+                                    IsOn="{x:Bind IsApplied, Mode=TwoWay}"
+                                    Toggled="TweakToggle_Toggled"
+                                    VerticalAlignment="Center"/>
+                            </Grid>
                         </Grid>
                     </Border>
                 </DataTemplate>

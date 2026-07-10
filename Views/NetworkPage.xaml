@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Network Optimizer &amp; Diagnostics" Style="{StaticResource TitleTextBlockStyle}" />
+        <TextBlock Grid.Row="0" Text="Network Optimizer &amp; Diagnostics" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
 
         <Pivot Grid.Row="1">
             
@@ -32,7 +32,7 @@
                     <!-- DNS Changer -->
                     <Border Grid.Column="0" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
                         <StackPanel Spacing="16">
-                            <TextBlock Text="DNS Server Changer" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <TextBlock Text="DNS Server Changer" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                             
                             <Button Content="Optimize Internet Speed" Command="{x:Bind ViewModel.OptimizeInternetCommand}" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}" FontWeight="Bold"/>
                             <Border Height="1" Background="{StaticResource DtrlCardBorderBrush}" Margin="0,5"/>
@@ -61,7 +61,7 @@
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-                                <TextBlock Text="Provider Latency Benchmark" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <TextBlock Text="Provider Latency Benchmark" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                                 <Button Content="Run Benchmark" Command="{x:Bind ViewModel.BenchmarkDnsCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Right" />
                             </Grid>
 
@@ -75,7 +75,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0" Spacing="2">
-                                                <TextBlock Text="{x:Bind ProviderName}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                                <TextBlock Text="{x:Bind ProviderName}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                                                 <TextBlock Text="{x:Bind PrimaryIp}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" />
                                             </StackPanel>
                                             <!-- Query times -->
@@ -101,7 +101,7 @@
                     <!-- Ping Test Configuration -->
                     <Border Grid.Column="0" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
                         <StackPanel Spacing="16">
-                            <TextBlock Text="Ping Sweep &amp; MTU" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <TextBlock Text="Ping Sweep &amp; MTU" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                             
                             <TextBox Header="Ping Target Host / IP" Text="{x:Bind ViewModel.PingTarget, Mode=TwoWay}"/>
                             <Button Content="Test Latency &amp; Loss" Command="{x:Bind ViewModel.RunDiagnosticsCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" />
@@ -116,7 +116,7 @@
                     <!-- Ping Test Results -->
                     <Border Grid.Column="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
                         <StackPanel Spacing="20">
-                            <TextBlock Text="Connection Diagnostic Statistics" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <TextBlock Text="Connection Diagnostic Statistics" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                             
                             <Grid ColumnSpacing="20">
                                 <Grid.ColumnDefinitions>
@@ -128,16 +128,16 @@
                                 <Border Grid.Column="0" CornerRadius="10" Padding="12" Background="{StaticResource DtrlSurfaceBrush}">
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="Average Latency" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                                        <TextBlock Text="{x:Bind ViewModel.LatencyMs, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="ms" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{x:Bind ViewModel.LatencyMs, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                                        <TextBlock Text="ms" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center" Foreground="{StaticResource DtrlInkBrush}"/>
                                     </StackPanel>
                                 </Border>
 
                                 <Border Grid.Column="1" CornerRadius="10" Padding="12" Background="{StaticResource DtrlSurfaceBrush}">
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="Jitter Variance" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                                        <TextBlock Text="{x:Bind ViewModel.JitterMs, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="ms" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{x:Bind ViewModel.JitterMs, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                                        <TextBlock Text="ms" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center" Foreground="{StaticResource DtrlInkBrush}"/>
                                     </StackPanel>
                                 </Border>
 
@@ -145,18 +145,102 @@
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="Packet Loss" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                                         <TextBlock Text="{x:Bind ViewModel.PacketLoss, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Foreground="{StaticResource DtrlCautionBrush}"/>
-                                        <TextBlock Text="%" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="%" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Center" Foreground="{StaticResource DtrlInkBrush}"/>
                                     </StackPanel>
                                 </Border>
                             </Grid>
 
                             <StackPanel Spacing="6" Margin="0,10,0,0">
-                                <TextBlock Text="Diagnostics Logs:" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                                <TextBlock Text="Diagnostics Logs:" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                                 <Border Padding="12" CornerRadius="4" Background="{StaticResource DtrlSurfaceBrush}" BorderThickness="1" BorderBrush="{StaticResource DtrlCardBorderBrush}">
-                                    <TextBlock Text="{x:Bind ViewModel.DiagnosticMessage, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{x:Bind ViewModel.DiagnosticMessage, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" Foreground="{StaticResource DtrlInkBrush}"/>
                                 </Border>
                             </StackPanel>
                         </StackPanel>
+                    </Border>
+                </Grid>
+            </PivotItem>
+
+            <!-- Tab 3: Network Tweaks -->
+            <PivotItem Header="Network Tweaks">
+                <ListView
+                    ItemsSource="{x:Bind ViewModel.NetworkTweaks, Mode=OneWay}"
+                    SelectionMode="None"
+                    Padding="0,0,8,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Tweak">
+                            <Border Margin="0,4" CornerRadius="10" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1" HorizontalAlignment="Stretch">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Applied indicator bar -->
+                                    <Border Grid.Column="0" Width="4" CornerRadius="2" Margin="0,0,16,0" Background="{StaticResource DtrlAccentBrush}" Visibility="{x:Bind IsApplied, Mode=OneWay, Converter={StaticResource local:NetworkPage.GetVisibility}}"/>
+
+                                    <Grid Grid.Column="1" ColumnSpacing="16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Spacing="4">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                                                <Border CornerRadius="10" Padding="8,3" Background="{ThemeResource SystemFillColorNeutralBrush}" VerticalAlignment="Center">
+                                                    <TextBlock Text="{x:Bind Risk}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{x:Bind EstimatedImpact}" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4" Margin="20,0">
+                                            <TextBlock Text="Restart Required" Foreground="{StaticResource DtrlCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}" Visibility="{x:Bind RestartVisibility, Mode=OneWay}"/>
+                                        </StackPanel>
+
+                                        <ToggleSwitch
+                                            Grid.Column="2"
+                                            IsOn="{x:Bind IsApplied, Mode=TwoWay}"
+                                            Toggled="TweakToggle_Toggled"
+                                            VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+
+            <!-- Tab 4: Scripts & Repair -->
+            <PivotItem Header="Scripts &amp; Repair">
+                <Grid ColumnSpacing="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="320"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1" VerticalAlignment="Top">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="Network repair scripts" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <TextBlock Text="Reset the TCP/IP Winsock bindings, purge DNS caching tables, and request brand new local network interface leases." Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
+                            <Button Content="Reset Network Stack" Command="{x:Bind ViewModel.ResetNetworkStackCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" CornerRadius="8" Padding="16,8"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                        <Grid RowSpacing="12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Script Logs Output" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <ScrollViewer Grid.Row="1" Background="{StaticResource DtrlSurfaceBrush}" CornerRadius="8" Padding="12">
+                                <TextBlock Text="{x:Bind ViewModel.ResetLogText, Mode=OneWay}" FontFamily="Consolas" FontSize="12" Foreground="{StaticResource DtrlSuccessBrush}" TextWrapping="Wrap"/>
+                            </ScrollViewer>
+                        </Grid>
                     </Border>
                 </Grid>
             </PivotItem>

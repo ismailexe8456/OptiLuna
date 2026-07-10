@@ -35,8 +35,10 @@ public partial class TweaksViewModel : ObservableObject
     private Tweak? _selectedTweak;
 
     public ObservableCollection<Tweak> DisplayedTweaks { get; } = new();
-    public List<string> Categories { get; } = new() { "All", "Telemetry", "Performance", "Gaming", "Network", "Services", "Storage", "Visuals", "WindowsUpdate", "Privacy", "Policies" };
-    public List<string> RiskLevels { get; } = new() { "All", "Safe", "Advanced", "Dangerous" };
+    public List<string> Categories { get; } = new() { "All", "Telemetry", "Performance", "Gaming", "Network", "Services", "Storage", "Visuals", "WindowsUpdate", "Privacy", "Policies", "Debloat", "Nvidia", "Latency" };
+    public List<string> RiskLevels { get; } = new() { "All", "Safe", "Advanced", "Dangerous", "Experimental" };
+
+    public string SearchPlaceholderText => $"Type to Search for Tweaks ({_tweakService.GetTweaks().Count} available)...";
 
     public TweaksViewModel(ITweakService tweakService, ILoggingService logger, IRecoveryService recovery)
     {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,6 +15,7 @@ public partial class NetworkViewModel : ObservableObject
 {
     private readonly INetworkDiagnosticsService _networkService;
     private readonly ILoggingService _logger;
+    private readonly ITweakService _tweakService;
 
     [ObservableProperty]
     private string _pingTarget = "8.8.8.8";
@@ -38,12 +41,45 @@ public partial class NetworkViewModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
-    public ObservableCollection<DnsBenchmarkResult> DnsResults { get; } = new();
+    [ObservableProperty]
+    private string _resetLogText = "Click 'Reset Network Stack' below to start.";
 
-    public NetworkViewModel(INetworkDiagnosticsService networkService, ILoggingService logger)
+    public ObservableCollection<DnsBenchmarkResult> DnsResults { get; } = new();
+    public ObservableCollection<Tweak> NetworkTweaks { get; } = new();
+
+    public NetworkViewModel(INetworkDiagnosticsService networkService, ILoggingService logger, ITweakService tweakService)
     {
         _networkService = networkService;
         _logger = logger;
+        _tweakService = tweakService;
+
+        LoadNetworkTweaks();
+    }
+
+    public void LoadNetworkTweaks()
+    {
+        NetworkTweaks.Clear();
+        var tweaks = _tweakService.GetTweaks().Where(t => t.Category == TweakCategory.Network).ToList();
+        foreach (var t in tweaks)
+        {
+            NetworkTweaks.Add(t);
+        }
+    }
+
+    [RelayCommand]
+    private async Task ToggleTweakAsync(Tweak tweak)
+    {
+        IsBusy = true;
+        if (tweak.IsApplied)
+        {
+            await Task.Run(() => _tweakService.ApplyTweak(tweak));
+        }
+        else
+        {
+            await Task.Run(() => _tweakService.RevertTweak(tweak));
+        }
+        IsBusy = false;
+        LoadNetworkTweaks();
     }
 
     [RelayCommand]
@@ -102,6 +138,8 @@ public partial class NetworkViewModel : ObservableObject
         bool result = await Task.Run(() => _networkService.OptimizeInternet(out msg));
 
         DiagnosticMessage = msg;
+        _tweakService.RefreshTweakStatuses();
+        LoadNetworkTweaks();
         IsBusy = false;
     }
 
@@ -185,5 +223,86 @@ public partial class NetworkViewModel : ObservableObject
         DnsStatusText = result ? $"DNS: {provider} ({primary})" : "DNS: Change Failed";
         DiagnosticMessage = msg;
         IsBusy = false;
+    }
+
+    [RelayCommand]
+    private async Task ResetNetworkStackAsync()
+    {
+        IsBusy = true;
+        var log = new StringBuilder();
+        ResetLogText = "Initiating Network Stack Reset...\n";
+        
+        await Task.Run(() =>
+        {
+            // Step 1: Flush DNS
+            RunProcessLog(log, "ipconfig", "/flushdns", "Step 1: Flushing DNS Cache...");
+            UpdateLogText(log);
+
+            // Step 2: Winsock Reset
+            RunProcessLog(log, "netsh", "winsock reset", "Step 2: Resetting Winsock Catalogs...");
+            UpdateLogText(log);
+
+            // Step 3: IP reset
+            RunProcessLog(log, "netsh", "int ip reset", "Step 3: Resetting TCP/IP Stack Parameters...");
+            UpdateLogText(log);
+
+            // Step 4: IP Release
+            RunProcessLog(log, "ipconfig", "/release", "Step 4: Releasing Current DHCP IP Leases...");
+            UpdateLogText(log);
+
+            // Step 5: IP Renew
+            RunProcessLog(log, "ipconfig", "/renew", "Step 5: Requesting New DHCP IP Leases...");
+            UpdateLogText(log);
+
+            log.AppendLine("\n[SUCCESS] Network stack fully re-initialized. A system restart is recommended to complete all binds.");
+        });
+
+        UpdateLogText(log);
+        IsBusy = false;
+    }
+
+    private void RunProcessLog(StringBuilder log, string filename, string args, string stepDesc)
+    {
+        log.AppendLine($"\n--- {stepDesc} ---");
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = filename,
+                Arguments = args,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+            using var p = Process.Start(psi);
+            if (p != null)
+            {
+                string output = p.StandardOutput.ReadToEnd();
+                string error = p.StandardError.ReadToEnd();
+                p.WaitForExit();
+
+                if (!string.IsNullOrEmpty(output))
+                {
+                    log.AppendLine(output.Trim());
+                }
+                if (!string.IsNullOrEmpty(error))
+                {
+                    log.AppendLine("[ERROR] " + error.Trim());
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            log.AppendLine("[FAIL] Process execution error: " + ex.Message);
+        }
+    }
+
+    private void UpdateLogText(StringBuilder log)
+    {
+        App.DispatcherQueue.TryEnqueue(() =>
+        {
+            ResetLogText = log.ToString();
+        });
     }
 }

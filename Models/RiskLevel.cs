@@ -4,5 +4,6 @@ public enum RiskLevel
 {
     Safe,       // 🟢 Safe: Recommended, minor impact on system compatibility.
     Advanced,   // 🟡 Advanced: Modifies standard behavior, user should understand changes.
-    Dangerous   // 🔴 Dangerous: High risk of reducing compatibility, requires confirmation.
+    Dangerous,  // 🔴 Dangerous: High risk of reducing compatibility, requires confirmation.
+    Experimental // 🔵 Experimental: High risk / undocumented / verification needed.
 }

@@ -1,6 +1,7 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Dtrl.Models;
 using Dtrl.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,67 @@ public sealed partial class TweaksPage : Page
     private void Filter_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         ViewModel.FilterTweaks();
+    }
+
+    private void CategoryChip_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button clickedButton && clickedButton.Tag is string category)
+        {
+            ViewModel.SelectedCategory = category;
+            ViewModel.FilterTweaks();
+
+            var itemsControl = FindParent<ItemsControl>(clickedButton);
+            if (itemsControl != null)
+            {
+                UpdateChipSelectionVisuals(itemsControl, clickedButton);
+            }
+        }
+    }
+
+    private void ItemsControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is ItemsControl itemsControl)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                UpdateChipSelectionVisuals(itemsControl, null);
+            });
+        }
+    }
+
+    private void UpdateChipSelectionVisuals(ItemsControl itemsControl, Button selectedButton)
+    {
+        for (int i = 0; i < itemsControl.Items.Count; i++)
+        {
+            var container = itemsControl.ContainerFromIndex(i) as ContentPresenter;
+            if (container != null && VisualTreeHelper.GetChildrenCount(container) > 0)
+            {
+                var btn = VisualTreeHelper.GetChild(container, 0) as Button;
+                if (btn != null)
+                {
+                    var category = itemsControl.Items[i] as string;
+                    bool isSelected = (selectedButton != null && btn == selectedButton) || 
+                                     (selectedButton == null && category == ViewModel.SelectedCategory);
+
+                    if (isSelected)
+                    {
+                        btn.Style = (Style)Application.Current.Resources["AccentButtonStyle"];
+                    }
+                    else
+                    {
+                        btn.Style = (Style)Application.Current.Resources["DefaultButtonStyle"];
+                    }
+                }
+            }
+        }
+    }
+
+    private T FindParent<T>(DependencyObject child) where T : DependencyObject
+    {
+        DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+        if (parentObject == null) return null;
+        if (parentObject is T parent) return parent;
+        return FindParent<T>(parentObject);
     }
 
     private async void TweakToggle_Toggled(object sender, RoutedEventArgs e)
@@ -67,7 +129,6 @@ public sealed partial class TweaksPage : Page
                 var result = await dialog.ShowAsync();
                 if (result != ContentDialogResult.Primary)
                 {
-                    // Reset UI switch back to false without triggering toggled event loop
                     tweak.IsApplied = false;
                     toggle.IsOn = false;
                     return;

@@ -22,35 +22,38 @@ public sealed partial class MainPage : Page
 
     private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        if (args.IsSettingsSelected)
-        {
-            ContentFrame.Navigate(typeof(SettingsPage));
-            sender.Header = "DTRL Settings";
-            return;
-        }
-
-        if (args.SelectedItemContainer != null)
-        {
-            string tag = args.SelectedItemContainer.Tag.ToString() ?? "Dashboard";
-            sender.Header = $"DTRL - {args.SelectedItemContainer.Content}";
-
-            Type pageType = tag switch
+            if (args.IsSettingsSelected)
             {
-                "Dashboard" => typeof(DashboardPage),
-                "Tweaks" => typeof(TweaksPage),
-                "Profiles" => typeof(ProfilesPage),
-                "Hardware" => typeof(HardwarePage),
-                "Storage" => typeof(StoragePage),
-                "Network" => typeof(NetworkPage),
-                "SystemInfo" => typeof(SystemInfoPage),
-                "Benchmarks" => typeof(BenchmarkPage),
-                "Recovery" => typeof(RecoveryPage),
-                "Logs" => typeof(LogsPage),
-                _ => typeof(DashboardPage)
-            };
+                ContentFrame.Navigate(typeof(SettingsPage));
+                sender.Header = "OptiLuna Settings";
+                return;
+            }
 
-            ContentFrame.Navigate(pageType);
-        }
+            if (args.SelectedItemContainer != null)
+            {
+                string tag = args.SelectedItemContainer.Tag.ToString() ?? "Dashboard";
+                sender.Header = $"OptiLuna - {args.SelectedItemContainer.Content}";
+
+                Type pageType = tag switch
+                {
+                    "Dashboard" => typeof(DashboardPage),
+                    "Tweaks" => typeof(TweaksPage),
+                    "Profiles" => typeof(ProfilesPage),
+                    "PowerPlan" => typeof(PowerPlanPage),
+                    "AppBooster" => typeof(AppBoosterPage),
+                    "FocusMode" => typeof(FocusModePage),
+                    "Hardware" => typeof(HardwarePage),
+                    "Storage" => typeof(StoragePage),
+                    "Network" => typeof(NetworkPage),
+                    "SystemInfo" => typeof(SystemInfoPage),
+                    "Benchmarks" => typeof(BenchmarkPage),
+                    "Recovery" => typeof(RecoveryPage),
+                    "Logs" => typeof(LogsPage),
+                    _ => typeof(DashboardPage)
+                };
+
+                ContentFrame.Navigate(pageType);
+            }
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -62,32 +65,32 @@ public sealed partial class MainPage : Page
         if (query.Contains("tweak") || query.Contains("optimize"))
         {
             ContentFrame.Navigate(typeof(TweaksPage));
-            NavView.Header = "DTRL - System Tweaks";
+            NavView.Header = "OptiLuna - System Tweaks";
         }
         else if (query.Contains("hard") || query.Contains("cpu") || query.Contains("gpu") || query.Contains("ram"))
         {
             ContentFrame.Navigate(typeof(HardwarePage));
-            NavView.Header = "DTRL - Hardware Monitor";
+            NavView.Header = "OptiLuna - Hardware Monitor";
         }
         else if (query.Contains("network") || query.Contains("ping") || query.Contains("dns"))
         {
             ContentFrame.Navigate(typeof(NetworkPage));
-            NavView.Header = "DTRL - Network Diagnostics";
+            NavView.Header = "OptiLuna - Network Diagnostics";
         }
         else if (query.Contains("clean") || query.Contains("storage") || query.Contains("temp") || query.Contains("space"))
         {
             ContentFrame.Navigate(typeof(StoragePage));
-            NavView.Header = "DTRL - Storage Clean & Map";
+            NavView.Header = "OptiLuna - Storage Clean & Map";
         }
         else if (query.Contains("bench"))
         {
             ContentFrame.Navigate(typeof(BenchmarkPage));
-            NavView.Header = "DTRL - Benchmarks";
+            NavView.Header = "OptiLuna - Benchmarks";
         }
         else if (query.Contains("restore") || query.Contains("recovery") || query.Contains("undo"))
         {
             ContentFrame.Navigate(typeof(RecoveryPage));
-            NavView.Header = "DTRL - Restore & Undo";
+            NavView.Header = "OptiLuna - Restore & Undo";
         }
     }
 }

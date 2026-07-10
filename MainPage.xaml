@@ -43,6 +43,21 @@
                         <FontIcon Glyph="&#xE74E;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Content="Power Plan &amp; CPU" Tag="PowerPlan">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE93E;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="App Booster" Tag="AppBooster">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE701;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Focus Mode" Tag="FocusMode">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE756;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItemSeparator />
                 <NavigationViewItemHeader Content="Diagnostics" />
                 <NavigationViewItem Content="Hardware Monitor" Tag="Hardware">

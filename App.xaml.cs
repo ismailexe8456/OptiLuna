@@ -64,6 +64,8 @@ public partial class App : Application
         serviceCollection.AddSingleton<ISystemInfoService, SystemInfoService>();
         serviceCollection.AddSingleton<IBenchmarkService, BenchmarkService>();
         serviceCollection.AddSingleton<IProfileService, ProfileService>();
+        serviceCollection.AddSingleton<IAppBoosterService, AppBoosterService>();
+        serviceCollection.AddSingleton<IFocusModeService, FocusModeService>();
 
         // Register ViewModels
         serviceCollection.AddSingleton<MainViewModel>();
@@ -77,6 +79,9 @@ public partial class App : Application
         serviceCollection.AddTransient<RecoveryViewModel>();
         serviceCollection.AddTransient<LogsViewModel>();
         serviceCollection.AddTransient<SettingsViewModel>();
+        serviceCollection.AddTransient<PowerPlanViewModel>();
+        serviceCollection.AddTransient<AppBoosterViewModel>();
+        serviceCollection.AddTransient<FocusModeViewModel>();
 
         Services = serviceCollection.BuildServiceProvider();
     }

@@ -9,14 +9,18 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <Grid Margin="20" RowSpacing="24">
+    <Grid Margin="20" RowSpacing="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Dynamic Greeting Header -->
+        <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.GreetingHeader, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" />
+
         <!-- Top summary banner -->
-        <Border Grid.Row="0" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+        <Border Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
             <Grid ColumnSpacing="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -40,14 +44,15 @@
             </Grid>
         </Border>
 
-        <!-- Main Realtime Telemetry Grid -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <!-- Main Dashboard Content -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <Grid ColumnSpacing="16" RowSpacing="16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -68,7 +73,7 @@
                     </StackPanel>
                 </Border>
 
-                <!-- RAM telemetry card -->
+                <!-- RAM telemetry card with dynamic values -->
                 <Border Grid.Column="1" Grid.Row="0" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="10">
@@ -80,28 +85,92 @@
                             <TextBlock Text="{x:Bind ViewModel.RamUsedText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                             <TextBlock Text="{x:Bind ViewModel.RamTotalText, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                         </Grid>
-                        <TextBlock Text="Speed: 3200 MHz" Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <Grid>
+                            <TextBlock Text="{x:Bind ViewModel.RamSpeedText, Mode=OneWay}" Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4">
+                                <TextBlock Text="Reclaimable Standby: " Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                <TextBlock Text="{x:Bind ViewModel.ReclaimableMemoryGb, Mode=OneWay}" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="Bold"/>
+                                <TextBlock Text=" GB" Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Border>
 
-                <!-- GPU telemetry card -->
+                <!-- Three Rings circular activity monitor card -->
                 <Border Grid.Column="0" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xE916;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="Live Activity Rings" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                        </StackPanel>
+                        <Grid HorizontalAlignment="Center" Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- CPU Ring -->
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="8">
+                                <Grid Width="70" Height="70">
+                                    <ProgressRing Value="{x:Bind ViewModel.Metrics.CpuUsage, Mode=OneWay}" Width="60" Height="60" IsIndeterminate="False"/>
+                                    <TextBlock Text="{x:Bind ViewModel.CpuLoadText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" FontSize="10" FontWeight="Bold"/>
+                                </Grid>
+                                <TextBlock Text="CPU" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- GPU Ring -->
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center" Spacing="8">
+                                <Grid Width="70" Height="70">
+                                    <ProgressRing Value="{x:Bind ViewModel.Metrics.GpuUsage, Mode=OneWay}" Width="60" Height="60" IsIndeterminate="False"/>
+                                    <TextBlock Text="{x:Bind ViewModel.GpuLoadText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" FontSize="10" FontWeight="Bold"/>
+                                </Grid>
+                                <TextBlock Text="GPU" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Disk Ring -->
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center" Spacing="8">
+                                <Grid Width="70" Height="70">
+                                    <ProgressRing Value="{x:Bind ViewModel.DiskUsagePercent, Mode=OneWay}" Width="60" Height="60" IsIndeterminate="False"/>
+                                    <TextBlock Text="{x:Bind ViewModel.DiskSpecText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" FontSize="8" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
+                                </Grid>
+                                <TextBlock Text="Disk" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- App Booster card -->
+                <Border Grid.Column="1" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE7F4;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="Graphics Card (GPU)" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE701;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="App Booster Watcher" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
                         </StackPanel>
-                        <ProgressBar Value="{x:Bind ViewModel.Metrics.GpuUsage, Mode=OneWay}" Minimum="0" Maximum="100"/>
-                        <Grid>
-                            <TextBlock Text="{x:Bind ViewModel.GpuLoadText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="{x:Bind ViewModel.GpuVramText, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                        </Grid>
-                        <TextBlock Text="{x:Bind ViewModel.GpuTempText, Mode=OneWay}" Foreground="{StaticResource DtrlCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.BoosterStatusText, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" Margin="0,4"/>
+                        <TextBlock Text="Automatically monitors running games, raises processor thread scheduling cycles to High, and suspends background services." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
 
-                <!-- System Info summary card -->
-                <Border Grid.Column="1" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <!-- What's new changelog card -->
+                <Border Grid.Column="0" Grid.Row="2" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <FontIcon Glyph="&#xE8A5;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="What's New in OptiLuna" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                        </StackPanel>
+                        <StackPanel Spacing="6" Margin="0,4">
+                            <TextBlock Text="• Added VTRL-Level dark visual themes." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="• Built 1-Click Fast Internet optimization service." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="• Integrated deep system cache cleaner." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="• Added granular CPU power states tweaks." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="• Added Nvidia &amp; Input latency override tweaks." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- System Spec details card -->
+                <Border Grid.Column="1" Grid.Row="2" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="8">
                         <StackPanel Orientation="Horizontal" Spacing="10">
                             <FontIcon Glyph="&#xE946;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
