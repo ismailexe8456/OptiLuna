@@ -17,6 +17,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>OptiLuna</AssemblyName>
     <ApplicationIcon>OptiLuna.ico</ApplicationIcon>
+    <PriIndexName>Dtrl</PriIndexName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -72,4 +73,23 @@
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
   </PropertyGroup>
+
+  <!--
+    Inject generated XBF files into the PRI resource layout so that the
+    WinUI 3 runtime can resolve ms-appx:///Views/*.xaml URIs at runtime.
+    This is needed for unpackaged (WindowsPackageType=None) builds where
+    the XAML compiler's XBF output isn't automatically added to the PRI.
+  -->
+  <Target Name="_InjectXbfIntoPriLayout" BeforeTargets="_GenerateProjectPriFileCore;_GeneratePriFileCore">
+    <ItemGroup>
+      <_XbfFilesForPri Include="$(IntermediateOutputPath)Views\**\*.xbf" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_XbfLayoutFile>$(IntermediateOutputPath)xbf.layout.resfiles</_XbfLayoutFile>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(_XbfLayoutFile)" Lines="@(_XbfFilesForPri->'%(RecursiveDir)%(Filename)%(Extension)')" Overwrite="true" />
+    <!-- Append XBF entries to the filtered layout resfiles -->
+    <WriteLinesToFile File="$(IntermediateOutputPath)filtered.layout.resfiles" Lines="@(_XbfFilesForPri->'%(RecursiveDir)%(Filename)%(Extension)')" Overwrite="false" />
+  </Target>
+
 </Project>
