@@ -16,4 +16,6 @@ public class RestorePointInfo
     public string Description { get; set; } = string.Empty;
     public string CreatedAt { get; set; } = string.Empty;
     public uint RestorePointType { get; set; }
+
+    public string SequenceNumberText => SequenceNumber.ToString();
 }

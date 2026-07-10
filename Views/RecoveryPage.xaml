@@ -69,7 +69,7 @@
                                             <TextBlock Text="{x:Bind Description}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                                             <TextBlock Text="{x:Bind CreatedAt}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="1" Text="{x:Bind SequenceNumber}" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" Foreground="{StaticResource DtrlAccentBrightBrush}"/>
+                                        <TextBlock Grid.Column="1" Text="{x:Bind SequenceNumberText}" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" Foreground="{StaticResource DtrlAccentBrightBrush}"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
