@@ -15,6 +15,7 @@ public partial class DashboardViewModel : ObservableObject
     private readonly IHardwareMonitorService _hardwareMonitor;
     private readonly ITweakService _tweakService;
     private readonly IAppBoosterService _appBooster;
+    private readonly IFocusModeService _focusMode;
 
     [ObservableProperty]
     private HardwareMetrics _metrics = new();
@@ -54,11 +55,12 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty] private string _motherboardText = "MB: --";
     [ObservableProperty] private string _biosText = "BIOS: --";
 
-    public DashboardViewModel(IHardwareMonitorService hardwareMonitor, ITweakService tweakService, IAppBoosterService appBooster)
+    public DashboardViewModel(IHardwareMonitorService hardwareMonitor, ITweakService tweakService, IAppBoosterService appBooster, IFocusModeService focusMode)
     {
         _hardwareMonitor = hardwareMonitor;
         _tweakService = tweakService;
         _appBooster = appBooster;
+        _focusMode = focusMode;
 
         // Set up greeting
         int hour = DateTime.Now.Hour;
@@ -138,9 +140,11 @@ public partial class DashboardViewModel : ObservableObject
         }
 
         // App Booster Status
-        BoosterStatusText = _appBooster.IsFocusActive || _appBooster.IsBoostActive
-            ? $"Active: {_appBooster.BoostedGameName}"
-            : "No active boost detected.";
+        BoosterStatusText = _focusMode.IsFocusActive
+            ? "Focus Mode Active (Notifications Muted)"
+            : _appBooster.IsBoostActive
+                ? $"App Booster Active (Prioritizing {_appBooster.BoostedGameName})"
+                : "No active boost detected.";
     }
 
     public void CalculateScore()

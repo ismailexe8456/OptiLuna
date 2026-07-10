@@ -15,7 +15,6 @@ public partial class PowerPlanViewModel : ObservableObject
     private readonly ITweakService _tweakService;
     private readonly ILoggingService _logger;
     private readonly IRecoveryService _recovery;
-    private readonly ISystemInfoService _sysInfo;
 
     [ObservableProperty]
     private string _selectedTab = "Desktop"; // Desktop, Laptop, Custom
@@ -26,20 +25,30 @@ public partial class PowerPlanViewModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
+    [ObservableProperty]
+    private bool _disableConfirmations;
+
     public ObservableCollection<Tweak> DisplayedSettings { get; } = new();
     public List<string> Presets { get; } = new() { "Balanced", "Max Performance", "Silent" };
 
     private readonly string _cpuVendor;
 
-    public PowerPlanViewModel(ITweakService tweakService, ILoggingService logger, IRecoveryService recovery, ISystemInfoService sysInfo)
+    public PowerPlanViewModel(ITweakService tweakService, ILoggingService logger, IRecoveryService recovery)
     {
         _tweakService = tweakService;
         _logger = logger;
         _recovery = recovery;
-        _sysInfo = sysInfo;
 
-        // Detect CPU Vendor
-        string cpuName = _sysInfo.GetCpuName().ToLower();
+        // Detect CPU Vendor from Windows Registry
+        string cpuName = "";
+        try
+        {
+            using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0"))
+            {
+                cpuName = key?.GetValue("ProcessorNameString")?.ToString()?.ToLower() ?? "";
+            }
+        }
+        catch { }
         _cpuVendor = cpuName.Contains("amd") || cpuName.Contains("ryzen") ? "AMD" : "Intel";
 
         LoadSettings();
