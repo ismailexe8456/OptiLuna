@@ -1,0 +1,527 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {},
+    ".NETCoreApp,Version=v9.0/win-x64": {
+      "OptiLuna/1.0.0": {
+        "dependencies": {
+          "CommunityToolkit.Mvvm": "8.4.2",
+          "Microsoft.Extensions.DependencyInjection": "10.0.9",
+          "Microsoft.WindowsAppSDK": "2.2.0",
+          "System.Diagnostics.PerformanceCounter": "10.0.9",
+          "System.Management": "10.0.9",
+          "WinUIEx": "2.9.1",
+          "runtimepack.Microsoft.NETCore.App.Runtime.win-x64": "9.0.11",
+          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.26100.57"
+        },
+        "runtime": {
+          "OptiLuna.dll": {}
+        }
+      },
+      "runtimepack.Microsoft.NETCore.App.Runtime.win-x64/9.0.11": {
+        "runtime": {
+          "Microsoft.Win32.Registry.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Collections.Concurrent.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Collections.Immutable.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Collections.NonGeneric.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Collections.Specialized.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Collections.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.ComponentModel.Primitives.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.ComponentModel.TypeConverter.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.ComponentModel.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Diagnostics.DiagnosticSource.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Diagnostics.Process.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Diagnostics.StackTrace.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.IO.Compression.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.IO.FileSystem.DriveInfo.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.IO.MemoryMappedFiles.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.IO.Pipelines.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Linq.Expressions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Linq.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Memory.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Net.NameResolution.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Net.Ping.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Net.Primitives.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Net.Sockets.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.ObjectModel.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Private.CoreLib.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Private.Uri.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Reflection.Metadata.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Runtime.InteropServices.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Security.AccessControl.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Security.Claims.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Security.Cryptography.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Security.Principal.Windows.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Text.Encodings.Web.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Text.Json.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Text.RegularExpressions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.Threading.Tasks.Parallel.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          },
+          "System.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "9.0.1125.51716"
+          }
+        },
+        "native": {
+          "Microsoft.DiaSymReader.Native.amd64.dll": {
+            "fileVersion": "14.42.34436.0"
+          },
+          "System.IO.Compression.Native.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "clretwrc.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "clrgc.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "clrgcexp.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "clrjit.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "coreclr.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "createdump.exe": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "hostfxr.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "hostpolicy.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "mscordaccore.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "mscordaccore_amd64_amd64_9.0.1125.51716.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "mscordbi.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "mscorrc.dll": {
+            "fileVersion": "9.0.1125.51716"
+          },
+          "msquic.dll": {
+            "fileVersion": "2.4.8.0"
+          }
+        }
+      },
+      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.26100.57": {
+        "runtime": {
+          "Microsoft.Windows.SDK.NET.dll": {
+            "assemblyVersion": "10.0.26100.38",
+            "fileVersion": "10.0.26100.55"
+          },
+          "WinRT.Runtime.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.48161"
+          }
+        }
+      },
+      "CommunityToolkit.Mvvm/8.4.2": {
+        "runtime": {
+          "lib/net8.0-windows10.0.17763/CommunityToolkit.Mvvm.dll": {
+            "assemblyVersion": "8.4.0.0",
+            "fileVersion": "8.4.2.1"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/10.0.9": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.9"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.9": {
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "Microsoft.Web.WebView2/1.0.3719.77": {
+        "native": {
+          "runtimes/win-x64/native/WebView2Loader.dll": {
+            "fileVersion": "1.0.3719.77"
+          }
+        }
+      },
+      "Microsoft.Windows.AI.MachineLearning/2.1.70": {
+        "native": {
+          "runtimes/win-x64/native/DirectML.dll": {
+            "fileVersion": "1.15.4.0"
+          },
+          "runtimes/win-x64/native/Microsoft.Windows.AI.MachineLearning.dll": {
+            "fileVersion": "2.1.70.24056"
+          },
+          "runtimes/win-x64/native/onnxruntime.dll": {
+            "fileVersion": "1.24.26.504"
+          }
+        }
+      },
+      "Microsoft.WindowsAppSDK/2.2.0": {
+        "dependencies": {
+          "Microsoft.WindowsAppSDK.Foundation": "2.1.0",
+          "Microsoft.WindowsAppSDK.InteractiveExperiences": "2.0.15",
+          "Microsoft.WindowsAppSDK.ML": "2.1.70",
+          "Microsoft.WindowsAppSDK.WinUI": "2.2.1"
+        }
+      },
+      "Microsoft.WindowsAppSDK.Foundation/2.1.0": {
+        "dependencies": {
+          "Microsoft.WindowsAppSDK.InteractiveExperiences": "2.0.15"
+        },
+        "runtime": {
+          "lib/net6.0-windows10.0.17763.0/Microsoft.Windows.ApplicationModel.Resources.Projection.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        },
+        "native": {
+          "runtimes/win-x64/native/Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll": {
+            "fileVersion": "2.0.0.0"
+          },
+          "runtimes/win-x64/native/Microsoft.WindowsAppRuntime.Bootstrap.dll": {
+            "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "Microsoft.WindowsAppSDK.InteractiveExperiences/2.0.15": {
+        "runtime": {
+          "lib/net6.0-windows10.0.18362.0/Microsoft.InteractiveExperiences.Projection.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.27200.1024"
+          }
+        }
+      },
+      "Microsoft.WindowsAppSDK.ML/2.1.70": {
+        "dependencies": {
+          "Microsoft.Windows.AI.MachineLearning": "2.1.70",
+          "Microsoft.WindowsAppSDK.Foundation": "2.1.0"
+        }
+      },
+      "Microsoft.WindowsAppSDK.WinUI/2.2.1": {
+        "dependencies": {
+          "Microsoft.Web.WebView2": "1.0.3719.77",
+          "Microsoft.WindowsAppSDK.Foundation": "2.1.0",
+          "Microsoft.WindowsAppSDK.InteractiveExperiences": "2.0.15"
+        },
+        "runtime": {
+          "lib/net6.0-windows10.0.17763.0/Microsoft.WinUI.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.2606"
+          }
+        }
+      },
+      "System.Configuration.ConfigurationManager/10.0.9": {
+        "dependencies": {
+          "System.Diagnostics.EventLog": "10.0.9"
+        }
+      },
+      "System.Diagnostics.EventLog/10.0.9": {
+        "runtime": {
+          "runtimes/win/lib/net9.0/System.Diagnostics.EventLog.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "System.Diagnostics.PerformanceCounter/10.0.9": {
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "10.0.9",
+          "System.Threading.AccessControl": "10.0.9"
+        },
+        "runtime": {
+          "runtimes/win/lib/net9.0/System.Diagnostics.PerformanceCounter.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "System.Management/10.0.9": {
+        "runtime": {
+          "runtimes/win/lib/net9.0/System.Management.dll": {
+            "assemblyVersion": "10.0.0.9",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "System.Threading.AccessControl/10.0.9": {
+        "runtime": {
+          "runtimes/win/lib/net9.0/System.Threading.AccessControl.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.926.27113"
+          }
+        }
+      },
+      "WinUIEx/2.9.1": {
+        "dependencies": {
+          "Microsoft.WindowsAppSDK.WinUI": "2.2.1"
+        },
+        "runtime": {
+          "lib/net8.0-windows10.0.19041/WinUIEx.dll": {
+            "assemblyVersion": "2.9.1.0",
+            "fileVersion": "2.9.1.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "OptiLuna/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "runtimepack.Microsoft.NETCore.App.Runtime.win-x64/9.0.11": {
+      "type": "runtimepack",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.26100.57": {
+      "type": "runtimepack",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CommunityToolkit.Mvvm/8.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg==",
+      "path": "communitytoolkit.mvvm/8.4.2",
+      "hashPath": "communitytoolkit.mvvm.8.4.2.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NijozhERJDIaJ4k5TSMy1jOi0cSC2HfkvRD/Sl+kGSSKgVbFnF4GxgtMN/MrzHB8D1JxIrD4xSer9Blh9v3axQ==",
+      "path": "microsoft.extensions.dependencyinjection/10.0.9",
+      "hashPath": "microsoft.extensions.dependencyinjection.10.0.9.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g41l/30G3K4B/d/L8kjux0+30e27c8D0FVQ/PFCpbekgfDpj9mnDhieP67EqXWvl1EWNeZh2rpR4F5B/jcDOHA==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.9",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.10.0.9.nupkg.sha512"
+    },
+    "Microsoft.Web.WebView2/1.0.3719.77": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t+ucyKw5NTwMjsUrDF6R9Lk40lpcKQD1/HgyGFxl49tdA4h9dKlsj6FYGEmDRpFNfnTpENuTypMcdbrlkqBdDA==",
+      "path": "microsoft.web.webview2/1.0.3719.77",
+      "hashPath": "microsoft.web.webview2.1.0.3719.77.nupkg.sha512"
+    },
+    "Microsoft.Windows.AI.MachineLearning/2.1.70": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3Ft/INx7j/paN68bttIWGsVCs/DNJEWtjm460Z5vyxIEiWHdtBFRi+bBVlu322+r8oqN1GZtB3QDV9qoY1w7mg==",
+      "path": "microsoft.windows.ai.machinelearning/2.1.70",
+      "hashPath": "microsoft.windows.ai.machinelearning.2.1.70.nupkg.sha512"
+    },
+    "Microsoft.WindowsAppSDK/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kUgzkxWkqxUNpUwDU4mnNwlkDwSO8sO1SiUTFXD2YKW+SKTVB4rJjqmOLqMgBQbz4yfs+dLjmpeKXtV4Uf9c/Q==",
+      "path": "microsoft.windowsappsdk/2.2.0",
+      "hashPath": "microsoft.windowsappsdk.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.WindowsAppSDK.Foundation/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Urz1WrsXHYDHYrCPIWZlSTwgXwghEXlS6lY62Hk3vZE0GZ3hyYrMM7a+p6RrXC55GEgrRhOTRqXqcH2ZL/UWRA==",
+      "path": "microsoft.windowsappsdk.foundation/2.1.0",
+      "hashPath": "microsoft.windowsappsdk.foundation.2.1.0.nupkg.sha512"
+    },
+    "Microsoft.WindowsAppSDK.InteractiveExperiences/2.0.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-aQ9uzAIhTaN9zkclrtVg6kylpF+hESU+tC0bHarOCWdBz8ShZ7gt+gKwEmjKiqtPv6sRrRglyLLNVSPfb8KmMQ==",
+      "path": "microsoft.windowsappsdk.interactiveexperiences/2.0.15",
+      "hashPath": "microsoft.windowsappsdk.interactiveexperiences.2.0.15.nupkg.sha512"
+    },
+    "Microsoft.WindowsAppSDK.ML/2.1.70": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Okbb/lBv2YBDH6bjhrMCQBANsopvZJjdu+ZFNVcx5LafM+dsjEVFBnPkakmA/rwRbuP+N4q/GYoKH60uwH9jRA==",
+      "path": "microsoft.windowsappsdk.ml/2.1.70",
+      "hashPath": "microsoft.windowsappsdk.ml.2.1.70.nupkg.sha512"
+    },
+    "Microsoft.WindowsAppSDK.WinUI/2.2.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-w8KuqJB7IphDRXAGNVuRq+oGeoGycc4ZAraA+OIpsGm/boEKHLkwXmzNDaNrVlnsDpjxQFWE2XVp0hXjlWJqxw==",
+      "path": "microsoft.windowsappsdk.winui/2.2.1",
+      "hashPath": "microsoft.windowsappsdk.winui.2.2.1.nupkg.sha512"
+    },
+    "System.Configuration.ConfigurationManager/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-k7kYSTmNjwFYKdUju+rjYyigbcUBj1sElR3ayqszcatPXL9YJoBANJN48xctdXTopYf3ceFX2T4m1xvJRM+CGA==",
+      "path": "system.configuration.configurationmanager/10.0.9",
+      "hashPath": "system.configuration.configurationmanager.10.0.9.nupkg.sha512"
+    },
+    "System.Diagnostics.EventLog/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-s2PcxHK4IYQ6gmD3VSBkym9tWGkFisKjcjWBdl7a+n4Yy66ae4beJ1ZdjDp060SSll4W3Rt4H2LW87dWckv+QQ==",
+      "path": "system.diagnostics.eventlog/10.0.9",
+      "hashPath": "system.diagnostics.eventlog.10.0.9.nupkg.sha512"
+    },
+    "System.Diagnostics.PerformanceCounter/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-brTyfKYxhpaXyh244XpQZ6vDUtT+fEOUjYlJxZVhkiPLBPzutDCfkIkClsdEbOlv0wLH/YSeq0rMUHGGcdWK9Q==",
+      "path": "system.diagnostics.performancecounter/10.0.9",
+      "hashPath": "system.diagnostics.performancecounter.10.0.9.nupkg.sha512"
+    },
+    "System.Management/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8mfTzHLlMHCqFE1+iFGzxRCeCb2gDqvRQtZthuksYB+z546QZaFCiagbJ2KXHe7dy5ZpCUg/usaIqc2DxiemPw==",
+      "path": "system.management/10.0.9",
+      "hashPath": "system.management.10.0.9.nupkg.sha512"
+    },
+    "System.Threading.AccessControl/10.0.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/utVaFqfaleVsxwCPYbEj1+BrOf2o+kXYDbHtOV1IrhN35y++hyOgV7meG+/n28kR9wEv6iIrRHFXn36+AASPw==",
+      "path": "system.threading.accesscontrol/10.0.9",
+      "hashPath": "system.threading.accesscontrol.10.0.9.nupkg.sha512"
+    },
+    "WinUIEx/2.9.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CSngX1WNOOSOzbQ8zQZmlWLAVguEpyIMU4lZh2IUgNmO4Zb3aJsRDXVpVUhRuje9NAvjzMh8xLBC/9tOLxUj8Q==",
+      "path": "winuiex/2.9.1",
+      "hashPath": "winuiex.2.9.1.nupkg.sha512"
+    }
+  },
+  "runtimes": {
+    "win-x64": [
+      "win",
+      "any",
+      "base"
+    ]
+  }
+}
