@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Services;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {

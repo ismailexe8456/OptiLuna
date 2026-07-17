@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Services;
-using Dtrl.Models;
+using NXG.Services;
+using NXG.Models;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class NetworkViewModel : ObservableObject
 {

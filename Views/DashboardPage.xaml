@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="Dtrl.Views.DashboardPage"
+    x:Class="NXG.Views.DashboardPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="using:Dtrl.Views"
+    xmlns:local="using:NXG.Views"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -17,10 +17,10 @@
         </Grid.RowDefinitions>
 
         <!-- Dynamic Greeting Header -->
-        <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.GreetingHeader, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" />
+        <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.GreetingHeader, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}" />
 
         <!-- Top summary banner -->
-        <Border Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+        <Border Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
             <Grid ColumnSpacing="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -31,13 +31,13 @@
                 <!-- Optimization Score Indicator -->
                 <Grid Grid.Column="0" Width="120" Height="120">
                     <ProgressRing Value="{x:Bind ViewModel.OptimizationScore, Mode=OneWay}" Width="100" Height="100" IsIndeterminate="False"/>
-                    <TextBlock Text="{x:Bind ViewModel.OptimizationScoreText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{ThemeResource TitleLargeTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                    <TextBlock Text="{x:Bind ViewModel.OptimizationScoreText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{ThemeResource TitleLargeTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                 </Grid>
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
-                    <TextBlock Text="{x:Bind ViewModel.ScoreStatus, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource DtrlAccentBrightBrush}"/>
-                    <TextBlock Text="Run a quick optimize to safely disable diagnostics, clean caches, and prioritize rendering paths." Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                    <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}"/>
+                    <TextBlock Text="{x:Bind ViewModel.ScoreStatus, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="{StaticResource NXGAccentBrightBrush}"/>
+                    <TextBlock Text="Run a quick optimize to safely disable diagnostics, clean caches, and prioritize rendering paths." Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                    <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkDimBrush}"/>
                 </StackPanel>
 
                 <Button Grid.Column="2" Content="Quick Optimize" Command="{x:Bind ViewModel.QuickOptimizeCommand}" Style="{StaticResource AccentButtonStyle}" Padding="16,10" CornerRadius="8" VerticalAlignment="Center"/>
@@ -58,50 +58,50 @@
                 </Grid.RowDefinitions>
 
                 <!-- CPU telemetry card -->
-                <Border Grid.Column="0" Grid.Row="0" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="0" Grid.Row="0" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE950;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="Central Processor (CPU)" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE950;" Foreground="{StaticResource NXGAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="Central Processor (CPU)" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                         </StackPanel>
                         <ProgressBar Value="{x:Bind ViewModel.Metrics.CpuUsage, Mode=OneWay}" Minimum="0" Maximum="100" IsIndeterminate="False"/>
                         <Grid>
-                            <TextBlock Text="{x:Bind ViewModel.CpuFreqText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="{x:Bind ViewModel.CpuLoadText, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="{x:Bind ViewModel.CpuFreqText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                            <TextBlock Text="{x:Bind ViewModel.CpuLoadText, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
                         </Grid>
-                        <TextBlock Text="{x:Bind ViewModel.CpuTempText, Mode=OneWay}" Foreground="{StaticResource DtrlCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.CpuTempText, Mode=OneWay}" Foreground="{StaticResource NXGCautionBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
                     </StackPanel>
                 </Border>
 
                 <!-- RAM telemetry card with dynamic values -->
-                <Border Grid.Column="1" Grid.Row="0" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="1" Grid.Row="0" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE964;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="System Memory (RAM)" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE964;" Foreground="{StaticResource NXGAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="System Memory (RAM)" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                         </StackPanel>
                         <ProgressBar Value="{x:Bind ViewModel.Metrics.RamUsed, Mode=OneWay}" Minimum="0" Maximum="{x:Bind ViewModel.Metrics.RamTotal, Mode=OneWay}" IsIndeterminate="False"/>
                         <Grid>
-                            <TextBlock Text="{x:Bind ViewModel.RamUsedText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="{x:Bind ViewModel.RamTotalText, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="{x:Bind ViewModel.RamUsedText, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                            <TextBlock Text="{x:Bind ViewModel.RamTotalText, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
                         </Grid>
                         <Grid>
-                            <TextBlock Text="{x:Bind ViewModel.RamSpeedText, Mode=OneWay}" Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                            <TextBlock Text="{x:Bind ViewModel.RamSpeedText, Mode=OneWay}" Foreground="{StaticResource NXGInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4">
-                                <TextBlock Text="Reclaimable Standby: " Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
-                                <TextBlock Text="{x:Bind ViewModel.ReclaimableMemoryGb, Mode=OneWay}" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="Bold"/>
-                                <TextBlock Text=" GB" Foreground="{StaticResource DtrlInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                <TextBlock Text="Reclaimable Standby: " Foreground="{StaticResource NXGInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                <TextBlock Text="{x:Bind ViewModel.ReclaimableMemoryGb, Mode=OneWay}" Foreground="{StaticResource NXGAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="Bold"/>
+                                <TextBlock Text=" GB" Foreground="{StaticResource NXGInkDimBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>
 
                 <!-- Three Rings circular activity monitor card -->
-                <Border Grid.Column="0" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="0" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="16">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE916;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="Live Activity Rings" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE916;" Foreground="{StaticResource NXGAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="Live Activity Rings" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                         </StackPanel>
                         <Grid HorizontalAlignment="Center" Margin="0,8">
                             <Grid.ColumnDefinitions>
@@ -114,72 +114,72 @@
                             <StackPanel Grid.Column="0" HorizontalAlignment="Center" Spacing="8">
                                 <Grid Width="70" Height="70">
                                     <ProgressRing Value="{x:Bind ViewModel.Metrics.CpuUsage, Mode=OneWay}" Width="60" Height="60" IsIndeterminate="False"/>
-                                    <TextBlock Text="{x:Bind ViewModel.CpuLoadText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Text="{x:Bind ViewModel.CpuLoadText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}" FontSize="10" FontWeight="Bold"/>
                                 </Grid>
-                                <TextBlock Text="CPU" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="CPU" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}" HorizontalAlignment="Center"/>
                             </StackPanel>
 
                             <!-- GPU Ring -->
                             <StackPanel Grid.Column="1" HorizontalAlignment="Center" Spacing="8">
                                 <Grid Width="70" Height="70">
                                     <ProgressRing Value="{x:Bind ViewModel.Metrics.GpuUsage, Mode=OneWay}" Width="60" Height="60" IsIndeterminate="False"/>
-                                    <TextBlock Text="{x:Bind ViewModel.GpuLoadText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Text="{x:Bind ViewModel.GpuLoadText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}" FontSize="10" FontWeight="Bold"/>
                                 </Grid>
-                                <TextBlock Text="GPU" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="GPU" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}" HorizontalAlignment="Center"/>
                             </StackPanel>
 
                             <!-- Disk Ring -->
                             <StackPanel Grid.Column="2" HorizontalAlignment="Center" Spacing="8">
                                 <Grid Width="70" Height="70">
                                     <ProgressRing Value="{x:Bind ViewModel.DiskUsagePercent, Mode=OneWay}" Width="60" Height="60" IsIndeterminate="False"/>
-                                    <TextBlock Text="{x:Bind ViewModel.DiskSpecText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}" FontSize="8" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{x:Bind ViewModel.DiskSpecText, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}" FontSize="8" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
                                 </Grid>
-                                <TextBlock Text="Disk" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Disk" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Border>
 
                 <!-- App Booster card -->
-                <Border Grid.Column="1" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="1" Grid.Row="1" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE701;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="App Booster Watcher" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE701;" Foreground="{StaticResource NXGAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="App Booster Watcher" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                         </StackPanel>
-                        <TextBlock Text="{x:Bind ViewModel.BoosterStatusText, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" Margin="0,4"/>
-                        <TextBlock Text="Automatically monitors running games, raises processor thread scheduling cycles to High, and suspends background services." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind ViewModel.BoosterStatusText, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}" Margin="0,4"/>
+                        <TextBlock Text="Automatically monitors running games, raises processor thread scheduling cycles to High, and suspends background services." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkDimBrush}" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
 
                 <!-- What's new changelog card -->
-                <Border Grid.Column="0" Grid.Row="2" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="0" Grid.Row="2" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE8A5;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="What's New in OptiLuna" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE8A5;" Foreground="{StaticResource NXGAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="What's New in NXG" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                         </StackPanel>
                         <StackPanel Spacing="6" Margin="0,4">
-                            <TextBlock Text="• Added VTRL-Level dark visual themes." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="• Built 1-Click Fast Internet optimization service." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="• Integrated deep system cache cleaner." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="• Added granular CPU power states tweaks." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                            <TextBlock Text="• Added Nvidia &amp; Input latency override tweaks." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
+                            <TextBlock Text="• Added VTRL-Level dark visual themes." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                            <TextBlock Text="• Built 1-Click Fast Internet optimization service." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                            <TextBlock Text="• Integrated deep system cache cleaner." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                            <TextBlock Text="• Added granular CPU power states tweaks." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                            <TextBlock Text="• Added Nvidia &amp; Input latency override tweaks." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
 
                 <!-- System Spec details card -->
-                <Border Grid.Column="1" Grid.Row="2" CornerRadius="12" Padding="24" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="1" Grid.Row="2" CornerRadius="12" Padding="24" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="8">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <FontIcon Glyph="&#xE946;" Foreground="{StaticResource DtrlAccentBrush}" FontSize="20"/>
-                            <TextBlock Text="System Spec Details" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource DtrlTextWhiteBrush}"/>
+                            <FontIcon Glyph="&#xE946;" Foreground="{StaticResource NXGAccentBrush}" FontSize="20"/>
+                            <TextBlock Text="System Spec Details" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource NXGTextWhiteBrush}"/>
                         </StackPanel>
-                        <TextBlock Text="{x:Bind ViewModel.Metrics.OsVersionName, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                        <TextBlock Text="{x:Bind ViewModel.OsBuildText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}"/>
-                        <TextBlock Text="{x:Bind ViewModel.MotherboardText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}"/>
-                        <TextBlock Text="{x:Bind ViewModel.BiosText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource DtrlInkDimBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.Metrics.OsVersionName, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.OsBuildText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkDimBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.MotherboardText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkDimBrush}"/>
+                        <TextBlock Text="{x:Bind ViewModel.BiosText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkDimBrush}"/>
                     </StackPanel>
                 </Border>
             </Grid>

@@ -1,12 +1,12 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Dtrl.Models;
-using Dtrl.ViewModels;
-using Dtrl.Services;
+using NXG.Models;
+using NXG.ViewModels;
+using NXG.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dtrl.Views;
+namespace NXG.Views;
 
 public sealed partial class StoragePage : Page
 {

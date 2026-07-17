@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class BenchmarkService : IBenchmarkService
 {
@@ -19,7 +19,7 @@ public class BenchmarkService : IBenchmarkService
 
     public async Task<BenchmarkResult> RunBenchmarkSuiteAsync(string testDirectoryPath)
     {
-        _logger.Log("Benchmark Started", "Running DTRL System Benchmark Suite (CPU, RAM, Disk)...");
+        _logger.Log("Benchmark Started", "Running NXG System Benchmark Suite (CPU, RAM, Disk)...");
         
         var result = new BenchmarkResult();
 
@@ -131,7 +131,7 @@ public class BenchmarkService : IBenchmarkService
     {
         return await Task.Run(() =>
         {
-            string tempFile = Path.Combine(dirPath, "dtrl_bench.bin");
+            string tempFile = Path.Combine(dirPath, "nxg_bench.bin");
             int sizeBytes = 100 * 1024 * 1024; // 100MB
             byte[] buffer = new byte[1024 * 1024]; // 1MB block size
             new Random().NextBytes(buffer);

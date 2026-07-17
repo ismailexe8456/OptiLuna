@@ -6,9 +6,9 @@ using System.Management;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class NetworkDiagnosticsService : INetworkDiagnosticsService
 {

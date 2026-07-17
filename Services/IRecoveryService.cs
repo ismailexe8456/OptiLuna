@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public interface IRecoveryService
 {
     bool CreateSystemRestorePoint(string description, out string message);
     bool BackupRegistryValue(string hive, string path, string valueName, object value, string type);
     bool RestoreRegistryValue(string hive, string path, string valueName, object value, string type);
+    bool RestoreLastBackup(string tweakId);
+    int GetBackupCount();
+    void ClearAllBackups();
     List<RestorePointInfo> GetSystemRestorePoints();
 }
 

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Helpers;
+namespace NXG.Helpers;
 
 public static class TweakRepository
 {

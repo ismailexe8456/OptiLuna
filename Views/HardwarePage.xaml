@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="Dtrl.Views.HardwarePage"
+    x:Class="NXG.Views.HardwarePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="using:Dtrl.Views"
-    xmlns:models="using:Dtrl.Models"
+    xmlns:local="using:NXG.Views"
+    xmlns:models="using:NXG.Models"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -30,7 +30,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- CPU & GPU detailed panel -->
-                <Border Grid.Column="0" Grid.Row="0" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="0" Grid.Row="0" CornerRadius="12" Padding="20" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="16">
                         <TextBlock Text="Processing Units (CPU &amp; GPU)" Style="{StaticResource SubtitleTextBlockStyle}" />
                         
@@ -55,7 +55,7 @@
                 </Border>
 
                 <!-- Motherboard & RAM detailed panel -->
-                <Border Grid.Column="1" Grid.Row="0" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="1" Grid.Row="0" CornerRadius="12" Padding="20" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="16">
                         <TextBlock Text="Memory &amp; Motherboard" Style="{StaticResource SubtitleTextBlockStyle}" />
                         
@@ -78,7 +78,7 @@
                 </Border>
 
                 <!-- Storage health SMART statuses -->
-                <Border Grid.Column="0" Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="0" Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="12">
                         <TextBlock Text="Storage Drive Health (SMART)" Style="{StaticResource SubtitleTextBlockStyle}" />
                         <ItemsControl ItemsSource="{x:Bind ViewModel.Metrics.StorageDrives, Mode=OneWay}">
@@ -87,11 +87,14 @@
                                     <StackPanel Padding="0,6" Spacing="4">
                                         <Grid>
                                             <TextBlock Text="{x:Bind DeviceId}" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                                            <TextBlock Text="{x:Bind Interface}" HorizontalAlignment="Right" Foreground="{StaticResource DtrlAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                            <TextBlock Text="{x:Bind Interface}" HorizontalAlignment="Right" Foreground="{StaticResource NXGAccentBrightBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
                                         </Grid>
-                                        <TextBlock Text="{x:Bind Model}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}"/>
-                                        <TextBlock Text="{x:Bind SmartStatusMessage}" Foreground="{StaticResource DtrlSuccessBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
-                                        <Border Height="1" Background="{StaticResource DtrlCardBorderBrush}" Margin="0,4,0,0"/>
+                                        <TextBlock Text="{x:Bind Model}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}"/>
+                                        <Grid>
+                                            <TextBlock Text="{x:Bind SmartStatusMessage}" Foreground="{x:Bind SmartStatusBrush}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                            <TextBlock Text="{x:Bind TemperatureText}" Visibility="{x:Bind TemperatureVisibility}" HorizontalAlignment="Right" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{StaticResource NXGInkDimBrush}"/>
+                                        </Grid>
+                                        <Border Height="1" Background="{StaticResource NXGCardBorderBrush}" Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -100,7 +103,7 @@
                 </Border>
 
                 <!-- Laptop Battery health status -->
-                <Border Grid.Column="1" Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+                <Border Grid.Column="1" Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
                     <StackPanel Spacing="16">
                         <TextBlock Text="Power &amp; Battery State" Style="{StaticResource SubtitleTextBlockStyle}" />
                         
@@ -114,7 +117,7 @@
 
                         <StackPanel Spacing="4">
                             <TextBlock Text="Battery Health" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                            <TextBlock Text="Healthy (98% Wear Level)" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlSuccessBrush}"/>
+                            <TextBlock Text="Healthy (98% Wear Level)" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource NXGSuccessBrush}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

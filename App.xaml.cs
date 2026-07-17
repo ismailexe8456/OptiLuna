@@ -1,10 +1,10 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
-using Dtrl.Services;
-using Dtrl.ViewModels;
+using NXG.Services;
+using NXG.ViewModels;
 
-namespace Dtrl;
+namespace NXG;
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
@@ -90,11 +90,50 @@ public partial class App : Application
     /// Invoked when the application is launched.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         Window = new MainWindow();
         DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
         Window.Activate();
+
+        using (var identity = System.Security.Principal.WindowsIdentity.GetCurrent())
+        {
+            var principal = new System.Security.Principal.WindowsPrincipal(identity);
+            if (!principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
+            {
+                var loggingService = Services.GetRequiredService<ILoggingService>();
+                loggingService.LogError("Admin Elevation Required", "NXG launched without Administrator privileges.");
+
+                if (Window.Content != null)
+                {
+                    if (Window.Content.XamlRoot == null)
+                    {
+                        var tcs = new System.Threading.Tasks.TaskCompletionSource<object>();
+                        if (Window.Content is FrameworkElement fe)
+                        {
+                            fe.Loaded += (s, e) => tcs.TrySetResult(null!);
+                        }
+                        else
+                        {
+                            tcs.SetResult(null!);
+                        }
+                        await tcs.Task;
+                    }
+
+                    var dialog = new Microsoft.UI.Xaml.Controls.ContentDialog
+                    {
+                        Title = "Administrator Rights Required",
+                        Content = "NXG requires administrator rights to apply registry and service tweaks. Please restart the application as administrator.",
+                        CloseButtonText = "Close Application",
+                        XamlRoot = Window.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                }
+
+                Application.Current.Exit();
+                return;
+            }
+        }
     }
 
     private static void LogCrash(string content)

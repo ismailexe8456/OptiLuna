@@ -4,9 +4,9 @@ using System.Diagnostics.Eventing.Reader;
 using System.Management;
 using System.Threading.Tasks;
 using Microsoft.Win32;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class SystemInfoService : ISystemInfoService
 {

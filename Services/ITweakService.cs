@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public interface ITweakService
 {

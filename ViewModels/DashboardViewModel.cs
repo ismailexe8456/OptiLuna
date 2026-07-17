@@ -5,10 +5,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Models;
-using Dtrl.Services;
+using NXG.Models;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class DashboardViewModel : ObservableObject
 {
@@ -91,15 +91,23 @@ public partial class DashboardViewModel : ObservableObject
     {
         CpuLoadText = $"{data.CpuUsage:F1}% Load";
         CpuFreqText = $"{data.CpuFrequency:F2} GHz";
-        CpuTempText = $"Core Temp: {data.CpuTemp:F1}°C";
+        CpuTempText = data.IsCpuTempEstimated 
+            ? $"Core Temp: ~{data.CpuTemp:F1}°C" 
+            : $"Core Temp: {data.CpuTemp:F1}°C";
         
         RamUsedText = $"{data.RamUsed:F1} GB Used";
         RamTotalText = $"{data.RamTotal:F1} GB Total";
         RamSpeedText = $"Speed: {data.RamSpeed} MHz";
         
-        GpuLoadText = $"{data.GpuUsage:F1}% Utilization";
-        GpuVramText = $"{data.GpuVramUsed:F1} / {data.GpuVramTotal:F1} GB VRAM";
-        GpuTempText = $"Temp: {data.GpuTemp:F1}°C";
+        GpuLoadText = data.IsGpuUsageEstimated 
+            ? $"~{data.GpuUsage:F1}% Utilization" 
+            : $"{data.GpuUsage:F1}% Utilization";
+        GpuVramText = data.IsGpuUsageEstimated 
+            ? $"~{data.GpuVramUsed:F1} / {data.GpuVramTotal:F1} GB VRAM" 
+            : $"{data.GpuVramUsed:F1} / {data.GpuVramTotal:F1} GB VRAM";
+        GpuTempText = data.IsGpuUsageEstimated 
+            ? $"Temp: ~{data.GpuTemp:F1}°C" 
+            : $"Temp: {data.GpuTemp:F1}°C";
         
         OsBuildText = $"Build: {data.OsBuild}";
         MotherboardText = $"MB: {data.MotherboardName}";

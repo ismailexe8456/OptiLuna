@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Models;
-using Dtrl.Services;
+using NXG.Models;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class TweaksViewModel : ObservableObject
 {

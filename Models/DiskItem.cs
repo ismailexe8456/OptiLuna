@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Dtrl.Models;
+namespace NXG.Models;
 
 public class DiskItem
 {

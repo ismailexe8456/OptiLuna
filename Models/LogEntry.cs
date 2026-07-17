@@ -1,6 +1,6 @@
 using System;
 
-namespace Dtrl.Models;
+namespace NXG.Models;
 
 public class LogEntry
 {

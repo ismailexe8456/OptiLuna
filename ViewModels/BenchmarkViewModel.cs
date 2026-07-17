@@ -4,10 +4,10 @@ using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Models;
-using Dtrl.Services;
+using NXG.Models;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class BenchmarkViewModel : ObservableObject
 {
@@ -55,7 +55,7 @@ public partial class BenchmarkViewModel : ObservableObject
     private async Task RunBenchmarkSuiteAsync()
     {
         IsBusy = true;
-        StatusText = "Beginning DTRL Benchmark Suite (Do not close app)...";
+        StatusText = "Beginning NXG Benchmark Suite (Do not close app)...";
         CpuProgressValue = 10;
         MemoryProgressValue = 0;
         DiskProgressValue = 0;

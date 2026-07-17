@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class AppBoosterService : IAppBoosterService
 {

@@ -1,7 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Dtrl.Models;
+namespace NXG.Models;
 
 public partial class Tweak : ObservableObject
 {

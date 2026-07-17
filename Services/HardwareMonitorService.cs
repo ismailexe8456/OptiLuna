@@ -6,9 +6,9 @@ using System.Linq;
 using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class HardwareMonitorService : IHardwareMonitorService, IDisposable
 {
@@ -186,12 +186,14 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
                         if (tempC > maxTemp) maxTemp = tempC;
                     }
                     metrics.CpuTemp = maxTemp > 0 ? Math.Round(maxTemp, 1) : 48.5;
+                    metrics.IsCpuTempEstimated = maxTemp <= 0;
                 }
             }
             catch
             {
                 // Fallback estimate based on CPU utilization
                 metrics.CpuTemp = Math.Round(40.0 + (metrics.CpuUsage * 0.45), 1);
+                metrics.IsCpuTempEstimated = true;
             }
 
             // RAM Usage
@@ -231,17 +233,225 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
             }
             catch { metrics.GpuVramTotal = 8.0; }
 
-            // Estimate GPU utilization
-            metrics.GpuUsage = Math.Round(5.0 + (metrics.CpuUsage * 0.25), 1);
-            metrics.GpuTemp = Math.Round(38.0 + (metrics.GpuUsage * 0.35), 1);
-            metrics.GpuVramUsed = Math.Round(metrics.GpuVramTotal * 0.28, 2);
+            // 1. Try to query real GPU usage via WMI
+            bool gpuUsageSuccess = false;
+            try
+            {
+                using (var searcher = new ManagementObjectSearcher(@"root\cimv2", "SELECT UtilizationPercentage FROM Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine"))
+                using (var col = searcher.Get())
+                {
+                    double totalUsage = 0;
+                    foreach (var obj in col)
+                    {
+                        totalUsage += Convert.ToDouble(obj["UtilizationPercentage"]);
+                    }
+                    if (col.Count > 0)
+                    {
+                        metrics.GpuUsage = Math.Round(Math.Min(totalUsage, 100.0), 1);
+                        gpuUsageSuccess = true;
+                    }
+                }
+            }
+            catch { }
+
+            // 2. Try to query real GPU VRAM usage via WMI
+            bool gpuVramSuccess = false;
+            try
+            {
+                using (var searcher = new ManagementObjectSearcher(@"root\cimv2", "SELECT LocalUsage FROM Win32_PerfFormattedData_GPUPerformanceCounters_GPULocalAdapterMemory"))
+                using (var col = searcher.Get())
+                {
+                    double totalLocalUsage = 0;
+                    foreach (var obj in col)
+                    {
+                        totalLocalUsage += Convert.ToDouble(obj["LocalUsage"]);
+                    }
+                    if (col.Count > 0)
+                    {
+                        metrics.GpuVramUsed = Math.Round(totalLocalUsage / (1024.0 * 1024.0 * 1024.0), 2);
+                        gpuVramSuccess = true;
+                    }
+                }
+            }
+            catch { }
+
+            if (gpuUsageSuccess)
+            {
+                metrics.GpuTemp = Math.Round(38.0 + (metrics.GpuUsage * 0.35), 1);
+                if (!gpuVramSuccess)
+                {
+                    metrics.GpuVramUsed = Math.Round(metrics.GpuVramTotal * 0.28, 2);
+                }
+                metrics.IsGpuUsageEstimated = false;
+            }
+            else
+            {
+                metrics.GpuUsage = Math.Round(5.0 + (metrics.CpuUsage * 0.25), 1);
+                metrics.GpuTemp = Math.Round(38.0 + (metrics.GpuUsage * 0.35), 1);
+                metrics.GpuVramUsed = Math.Round(metrics.GpuVramTotal * 0.28, 2);
+                metrics.IsGpuUsageEstimated = true;
+            }
 
             // Storage Drives & SMART Status
             try
             {
+                var failurePredictDict = new Dictionary<string, bool>();
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher(@"root\WMI", "SELECT InstanceName, PredictFailure FROM MSStorageDriver_FailurePredictStatus"))
+                    using (var col = searcher.Get())
+                    {
+                        foreach (ManagementObject obj in col)
+                        {
+                            var instanceName = obj["InstanceName"]?.ToString() ?? string.Empty;
+                            var predictFailure = Convert.ToBoolean(obj["PredictFailure"]);
+                            failurePredictDict[instanceName] = predictFailure;
+                        }
+                    }
+                }
+                catch { }
+
+                var tempDict = new Dictionary<string, double>();
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher(@"root\WMI", "SELECT InstanceName, Temperature FROM MSStorageDriver_Temperature"))
+                    using (var col = searcher.Get())
+                    {
+                        foreach (ManagementObject obj in col)
+                        {
+                            var instanceName = obj["InstanceName"]?.ToString() ?? string.Empty;
+                            var rawTemp = Convert.ToDouble(obj["Temperature"]);
+                            double celsius = rawTemp;
+                            if (rawTemp > 200)
+                            {
+                                celsius = rawTemp - 273.15;
+                            }
+                            tempDict[instanceName] = celsius;
+                        }
+                    }
+                }
+                catch { }
+
+                var driveToPnp = new Dictionary<string, string>();
+                try
+                {
+                    var partitionToLogical = new Dictionary<string, string>();
+                    using (var searcher = new ManagementObjectSearcher("SELECT Antecedent, Dependent FROM Win32_LogicalDiskToPartition"))
+                    using (var col = searcher.Get())
+                    {
+                        foreach (ManagementObject obj in col)
+                        {
+                            var ant = obj["Antecedent"]?.ToString() ?? string.Empty;
+                            var dep = obj["Dependent"]?.ToString() ?? string.Empty;
+                            var partId = GetValFromPath(ant, "DeviceID");
+                            var driveLetter = GetValFromPath(dep, "DeviceID");
+                            if (!string.IsNullOrEmpty(partId) && !string.IsNullOrEmpty(driveLetter))
+                            {
+                                partitionToLogical[partId] = driveLetter;
+                            }
+                        }
+                    }
+
+                    var physicalToPartitions = new Dictionary<string, List<string>>();
+                    using (var searcher = new ManagementObjectSearcher("SELECT Antecedent, Dependent FROM Win32_DiskDriveToDiskPartition"))
+                    using (var col = searcher.Get())
+                    {
+                        foreach (ManagementObject obj in col)
+                        {
+                            var ant = obj["Antecedent"]?.ToString() ?? string.Empty;
+                            var dep = obj["Dependent"]?.ToString() ?? string.Empty;
+                            var physId = GetValFromPath(ant, "DeviceID");
+                            var partId = GetValFromPath(dep, "DeviceID");
+                            if (!string.IsNullOrEmpty(physId) && !string.IsNullOrEmpty(partId))
+                            {
+                                if (!physicalToPartitions.ContainsKey(physId))
+                                    physicalToPartitions[physId] = new List<string>();
+                                physicalToPartitions[physId].Add(partId);
+                            }
+                        }
+                    }
+
+                    using (var searcher = new ManagementObjectSearcher("SELECT DeviceID, PNPDeviceID FROM Win32_DiskDrive"))
+                    using (var col = searcher.Get())
+                    {
+                        foreach (ManagementObject obj in col)
+                        {
+                            var physId = obj["DeviceID"]?.ToString() ?? string.Empty;
+                            var pnpId = obj["PNPDeviceID"]?.ToString() ?? string.Empty;
+                            if (!string.IsNullOrEmpty(physId) && !string.IsNullOrEmpty(pnpId))
+                            {
+                                if (physicalToPartitions.TryGetValue(physId, out var partIds))
+                                {
+                                    foreach (var partId in partIds)
+                                    {
+                                        if (partitionToLogical.TryGetValue(partId, out var driveLetter))
+                                        {
+                                            driveToPnp[driveLetter.ToUpper().TrimEnd('\\')] = pnpId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch { }
+
                 var drives = DriveInfo.GetDrives().Where(d => d.IsReady && d.DriveType == DriveType.Fixed);
                 foreach (var d in drives)
                 {
+                    string driveLetterKey = d.Name.TrimEnd('\\').ToUpper();
+                    driveToPnp.TryGetValue(driveLetterKey, out var pnpId);
+
+                    bool? predictFailure = null;
+                    if (!string.IsNullOrEmpty(pnpId))
+                    {
+                        foreach (var kvp in failurePredictDict)
+                        {
+                            if (PnpIdsMatch(pnpId, kvp.Key))
+                            {
+                                predictFailure = kvp.Value;
+                                break;
+                            }
+                        }
+                    }
+                    if (!predictFailure.HasValue && failurePredictDict.Count == 1)
+                    {
+                        predictFailure = failurePredictDict.Values.First();
+                    }
+
+                    int smartStatus = -1;
+                    string smartStatusMsg = "SMART data unavailable";
+                    if (predictFailure.HasValue)
+                    {
+                        if (predictFailure.Value)
+                        {
+                            smartStatus = 0;
+                            smartStatusMsg = "Failure Predicted (Critical)";
+                        }
+                        else
+                        {
+                            smartStatus = 1;
+                            smartStatusMsg = "Healthy (100% SMART)";
+                        }
+                    }
+
+                    double? temp = null;
+                    if (!string.IsNullOrEmpty(pnpId))
+                    {
+                        foreach (var kvp in tempDict)
+                        {
+                            if (PnpIdsMatch(pnpId, kvp.Key))
+                            {
+                                temp = kvp.Value;
+                                break;
+                            }
+                        }
+                    }
+                    if (!temp.HasValue && tempDict.Count == 1)
+                    {
+                        temp = tempDict.Values.First();
+                    }
+
                     var driveInfo = new StorageDriveInfo
                     {
                         DeviceId = d.Name,
@@ -249,9 +459,9 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
                         TotalSizeGb = Math.Round(d.TotalSize / (1024.0 * 1024.0 * 1024.0), 1),
                         FreeSpaceGb = Math.Round(d.TotalFreeSpace / (1024.0 * 1024.0 * 1024.0), 1),
                         Interface = d.Name.Contains("C:") ? "SSD (NVMe)" : "HDD (SATA)",
-                        SmartStatus = 1,
-                        SmartStatusMessage = "Healthy (100% SMART)",
-                        Temperature = 34.0
+                        SmartStatus = smartStatus,
+                        SmartStatusMessage = smartStatusMsg,
+                        Temperature = temp
                     };
                     metrics.StorageDrives.Add(driveInfo);
                 }
@@ -320,5 +530,46 @@ public class HardwareMonitorService : IHardwareMonitorService, IDisposable
     {
         StopMonitoring();
         _cpuCounter?.Dispose();
+    }
+
+    private static string GetValFromPath(string path, string key)
+    {
+        var searchPattern = $"{key}=\"";
+        int idx = path.IndexOf(searchPattern, StringComparison.OrdinalIgnoreCase);
+        if (idx >= 0)
+        {
+            int start = idx + searchPattern.Length;
+            int end = path.IndexOf('"', start);
+            if (end > start)
+            {
+                return path.Substring(start, end - start);
+            }
+        }
+        else
+        {
+            searchPattern = $"{key}=";
+            idx = path.IndexOf(searchPattern, StringComparison.OrdinalIgnoreCase);
+            if (idx >= 0)
+            {
+                int start = idx + searchPattern.Length;
+                int end = path.IndexOf(',', start);
+                if (end < 0) end = path.IndexOf(']', start);
+                if (end < 0) end = path.Length;
+                return path.Substring(start, end - start).Replace("\"", "").Trim();
+            }
+        }
+        return string.Empty;
+    }
+
+    private static bool PnpIdsMatch(string pnpId, string instanceName)
+    {
+        if (string.IsNullOrEmpty(pnpId) || string.IsNullOrEmpty(instanceName))
+            return false;
+        
+        string cleanPnp = new string(pnpId.Where(char.IsLetterOrDigit).ToArray());
+        string cleanInst = new string(instanceName.Where(char.IsLetterOrDigit).ToArray());
+
+        return cleanInst.Contains(cleanPnp, StringComparison.OrdinalIgnoreCase) || 
+               cleanPnp.Contains(cleanInst, StringComparison.OrdinalIgnoreCase);
     }
 }

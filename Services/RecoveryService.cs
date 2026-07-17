@@ -1,14 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
-using Dtrl.Models;
+using System.Text.Json;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class RecoveryService : IRecoveryService
 {
     private readonly ILoggingService _logger;
+    private readonly string _backupFilePath;
+    private readonly List<RegistryBackupEntry> _backups = new();
+    private readonly object _backupLock = new();
+    private readonly List<Tweak> _allTweaks;
 
     // Structs for SRSetRestorePointW
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -41,6 +48,14 @@ public class RecoveryService : IRecoveryService
     public RecoveryService(ILoggingService logger)
     {
         _logger = logger;
+
+        string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string nxgDir = Path.Combine(appData, "NXG");
+        Directory.CreateDirectory(nxgDir);
+        _backupFilePath = Path.Combine(nxgDir, "backups.json");
+
+        _allTweaks = Helpers.TweakRepository.GenerateTweaks();
+        LoadBackupsFromFile();
     }
 
     public bool CreateSystemRestorePoint(string description, out string message)
@@ -82,10 +97,150 @@ public class RecoveryService : IRecoveryService
         }
     }
 
+    private void LoadBackupsFromFile()
+    {
+        try
+        {
+            if (File.Exists(_backupFilePath))
+            {
+                string json = File.ReadAllText(_backupFilePath);
+                var loaded = JsonSerializer.Deserialize<List<RegistryBackupEntry>>(json);
+                if (loaded != null)
+                {
+                    lock (_backupLock)
+                    {
+                        _backups.Clear();
+                        _backups.AddRange(loaded);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning("Load Backups", $"Could not load registry backups from file: {ex.Message}");
+        }
+    }
+
+    private void SaveBackupsToFile()
+    {
+        try
+        {
+            lock (_backupLock)
+            {
+                string json = JsonSerializer.Serialize(_backups, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(_backupFilePath, json);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning("Save Backups", $"Could not save registry backups to file: {ex.Message}");
+        }
+    }
+
     public bool BackupRegistryValue(string hive, string path, string valueName, object value, string type)
     {
-        _logger.Log("Backup Registry", $"Backed up {hive}\\{path}\\{valueName} with value {value} ({type})");
-        return true; // Virtual logs write to main audit trace which has rollback options
+        string tweakId = "";
+        var matchingTweak = _allTweaks.FirstOrDefault(t => 
+        {
+            if (t.TargetType == "Registry")
+            {
+                return string.Equals(t.RegistryHive, hive, StringComparison.OrdinalIgnoreCase) &&
+                       string.Equals(t.RegistryPath, path, StringComparison.OrdinalIgnoreCase) &&
+                       string.Equals(t.RegistryValueName, valueName, StringComparison.OrdinalIgnoreCase);
+            }
+            else if (t.TargetType == "Service")
+            {
+                string serviceRegPath = $@"SYSTEM\CurrentControlSet\Services\{t.ServiceName}";
+                return string.Equals("HKLM", hive, StringComparison.OrdinalIgnoreCase) &&
+                       string.Equals(serviceRegPath, path, StringComparison.OrdinalIgnoreCase) &&
+                       string.Equals("Start", valueName, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        });
+
+        if (matchingTweak != null)
+        {
+            tweakId = matchingTweak.Id;
+        }
+        else
+        {
+            tweakId = $"custom_{valueName}";
+        }
+
+        lock (_backupLock)
+        {
+            bool exists = _backups.Any(b => 
+                string.Equals(b.TweakId, tweakId, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(b.Hive, hive, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(b.Path, path, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(b.ValueName, valueName, StringComparison.OrdinalIgnoreCase));
+
+            if (!exists)
+            {
+                var entry = new RegistryBackupEntry
+                {
+                    TweakId = tweakId,
+                    Hive = hive,
+                    Path = path,
+                    ValueName = valueName,
+                    Value = value?.ToString(),
+                    ValueType = type,
+                    BackedUpAt = DateTime.Now
+                };
+                _backups.Add(entry);
+                SaveBackupsToFile();
+                _logger.Log("Backup Registry", $"Backed up {hive}\\{path}\\{valueName} with value {value} ({type}) for Tweak: {tweakId}");
+            }
+            else
+            {
+                _logger.Log("Backup Registry", $"Backup for Tweak: {tweakId} already exists. Retained original value.");
+            }
+        }
+        return true;
+    }
+
+    public bool RestoreLastBackup(string tweakId)
+    {
+        RegistryBackupEntry? entry = null;
+        lock (_backupLock)
+        {
+            entry = _backups.LastOrDefault(b => string.Equals(b.TweakId, tweakId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (entry == null)
+        {
+            return false;
+        }
+
+        bool restored = RestoreRegistryValue(entry.Hive, entry.Path, entry.ValueName, entry.Value!, entry.ValueType);
+        if (restored)
+        {
+            lock (_backupLock)
+            {
+                _backups.Remove(entry);
+                SaveBackupsToFile();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public int GetBackupCount()
+    {
+        lock (_backupLock)
+        {
+            return _backups.Count;
+        }
+    }
+
+    public void ClearAllBackups()
+    {
+        lock (_backupLock)
+        {
+            _backups.Clear();
+            SaveBackupsToFile();
+        }
+        _logger.Log("Backups Cleared", "All registry backups were cleared by user.");
     }
 
     public bool RestoreRegistryValue(string hive, string path, string valueName, object value, string type)

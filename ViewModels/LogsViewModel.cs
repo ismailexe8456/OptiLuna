@@ -4,10 +4,10 @@ using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Models;
-using Dtrl.Services;
+using NXG.Models;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class LogsViewModel : ObservableObject
 {
@@ -52,9 +52,9 @@ public partial class LogsViewModel : ObservableObject
         StatusText = "Generating JSON export data...";
 
         string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string dtrlDir = Path.Combine(appData, "DTRL", "Logs");
-        Directory.CreateDirectory(dtrlDir);
-        string filePath = Path.Combine(dtrlDir, $"Audit_History_{DateTime.Now:yyyyMMdd_HHmmss}.json");
+        string nxgDir = Path.Combine(appData, "NXG", "Logs");
+        Directory.CreateDirectory(nxgDir);
+        string filePath = Path.Combine(nxgDir, $"Audit_History_{DateTime.Now:yyyyMMdd_HHmmss}.json");
 
         await Task.Run(() =>
         {
@@ -62,7 +62,7 @@ public partial class LogsViewModel : ObservableObject
             File.WriteAllText(filePath, json);
         });
 
-        StatusText = $"Audit trail exported successfully to LocalAppData/DTRL/Logs";
+        StatusText = $"Audit trail exported successfully to LocalAppData/NXG/Logs";
         IsBusy = false;
     }
 
@@ -73,9 +73,9 @@ public partial class LogsViewModel : ObservableObject
         StatusText = "Generating CSV export data...";
 
         string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string dtrlDir = Path.Combine(appData, "DTRL", "Logs");
-        Directory.CreateDirectory(dtrlDir);
-        string filePath = Path.Combine(dtrlDir, $"Audit_History_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+        string nxgDir = Path.Combine(appData, "NXG", "Logs");
+        Directory.CreateDirectory(nxgDir);
+        string filePath = Path.Combine(nxgDir, $"Audit_History_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
         await Task.Run(() =>
         {
@@ -83,7 +83,7 @@ public partial class LogsViewModel : ObservableObject
             File.WriteAllText(filePath, csv);
         });
 
-        StatusText = $"Audit trail exported successfully to LocalAppData/DTRL/Logs";
+        StatusText = $"Audit trail exported successfully to LocalAppData/NXG/Logs";
         IsBusy = false;
     }
 }

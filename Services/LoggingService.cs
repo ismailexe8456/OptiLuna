@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class LoggingService : ILoggingService
 {
@@ -17,9 +17,9 @@ public class LoggingService : ILoggingService
     public LoggingService()
     {
         string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string dtrlDir = Path.Combine(appData, "DTRL");
-        Directory.CreateDirectory(dtrlDir);
-        _logFilePath = Path.Combine(dtrlDir, "activity.log");
+        string nxgDir = Path.Combine(appData, "NXG");
+        Directory.CreateDirectory(nxgDir);
+        _logFilePath = Path.Combine(nxgDir, "activity.log");
         
         LoadLogsFromFile();
     }

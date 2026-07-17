@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using Dtrl.Models;
+using NXG.Models;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class ProfileService : IProfileService
 {
@@ -113,7 +113,7 @@ public class ProfileService : IProfileService
         _profiles.Add(new ProfileModel
         {
             Name = "Maximum Performance Suite",
-            Description = "Enables all safe performance, network, storage, and telemetry optimizations in DTRL.",
+            Description = "Enables all safe performance, network, storage, and telemetry optimizations in NXG.",
             IsBuiltIn = true,
             EnabledTweakIds = new List<string> {
                 "tel_diagtrack", "tel_dmwappushservice", "tel_allow_telemetry", "priv_ads_id",

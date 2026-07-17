@@ -4,7 +4,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {

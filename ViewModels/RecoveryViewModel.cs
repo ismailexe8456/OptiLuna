@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Services;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class RecoveryViewModel : ObservableObject
 {
@@ -13,13 +13,19 @@ public partial class RecoveryViewModel : ObservableObject
     private readonly ILoggingService _logger;
 
     [ObservableProperty]
-    private string _newRestorePointName = "DTRL Optimization Checkpoint";
+    private string _newRestorePointName = "NXG Optimization Checkpoint";
 
     [ObservableProperty]
     private bool _isBusy;
 
     [ObservableProperty]
     private string _statusText = "Ready to manage system recovery options";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BackupCountText))]
+    private int _backupCount;
+
+    public string BackupCountText => $"{BackupCount} backups currently active.";
 
     public ObservableCollection<RestorePointInfo> RestorePoints { get; } = new();
 
@@ -29,6 +35,20 @@ public partial class RecoveryViewModel : ObservableObject
         _logger = logger;
         
         _ = LoadRestorePoints();
+        RefreshBackupCount();
+    }
+
+    [RelayCommand]
+    private void ClearBackups()
+    {
+        _recoveryService.ClearAllBackups();
+        RefreshBackupCount();
+        StatusText = "All registry backups cleared.";
+    }
+
+    public void RefreshBackupCount()
+    {
+        BackupCount = _recoveryService.GetBackupCount();
     }
 
     [RelayCommand]

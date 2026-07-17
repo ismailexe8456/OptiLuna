@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public interface IAppBoosterService
 {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="Dtrl.Views.ProfilesPage"
+    x:Class="NXG.Views.ProfilesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="using:Dtrl.Views"
-    xmlns:models="using:Dtrl.Models"
+    xmlns:local="using:NXG.Views"
+    xmlns:models="using:NXG.Models"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left List of Profiles -->
-        <Border Grid.Column="0" CornerRadius="12" Padding="12" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+        <Border Grid.Column="0" CornerRadius="12" Padding="12" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
             <Grid RowSpacing="12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -36,20 +36,20 @@
                         <DataTemplate x:DataType="models:ProfileModel">
                             <StackPanel Padding="4,8" Spacing="2">
                                 <TextBlock Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                                <TextBlock Text="Built-in Game Profile" Foreground="{StaticResource DtrlInkBrush}" Style="{StaticResource CaptionTextBlockStyle}" Visibility="{x:Bind BuiltInVisibility, Mode=OneWay}"/>
+                                <TextBlock Text="Built-in Game Profile" Foreground="{StaticResource NXGInkBrush}" Style="{StaticResource CaptionTextBlockStyle}" Visibility="{x:Bind BuiltInVisibility, Mode=OneWay}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
                 <StackPanel Grid.Row="2" Spacing="8">
-                    <Button Content="Import Profile (.dtrl)" Command="{x:Bind ViewModel.ImportProfileCommand}" HorizontalAlignment="Stretch" />
+                    <Button Content="Import Profile (.nxg)" Command="{x:Bind ViewModel.ImportProfileCommand}" HorizontalAlignment="Stretch" />
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Right Profile Details Panel -->
-        <Border Grid.Column="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+        <Border Grid.Column="1" CornerRadius="12" Padding="20" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
             <Grid RowSpacing="16" Visibility="{x:Bind ViewModel.ProfilePanelVisibility, Mode=OneWay}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -62,7 +62,7 @@
                 <Grid Grid.Row="0">
                     <StackPanel Spacing="4">
                         <TextBlock Text="{x:Bind ViewModel.SelectedProfile.Name, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" />
-                        <TextBlock Text="{x:Bind ViewModel.SelectedProfile.Description, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource DtrlInkBrush}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind ViewModel.SelectedProfile.Description, Mode=OneWay}" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource NXGInkBrush}" TextWrapping="Wrap"/>
                     </StackPanel>
                     
                     <Button Content="Apply Profile" Command="{x:Bind ViewModel.ApplySelectedProfileCommand}" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="20,10" CornerRadius="4"/>

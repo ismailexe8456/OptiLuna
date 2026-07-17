@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="Dtrl.Views.LogsPage"
+    x:Class="NXG.Views.LogsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="using:Dtrl.Views"
-    xmlns:models="using:Dtrl.Models"
+    xmlns:local="using:NXG.Views"
+    xmlns:models="using:NXG.Models"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -29,7 +29,7 @@
         </Grid>
 
         <!-- Main logs lists -->
-        <Border Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource DtrlCardBrush}" BorderBrush="{StaticResource DtrlCardBorderBrush}" BorderThickness="1">
+        <Border Grid.Row="1" CornerRadius="12" Padding="20" Background="{StaticResource NXGCardBrush}" BorderBrush="{StaticResource NXGCardBorderBrush}" BorderThickness="1">
             <ListView ItemsSource="{x:Bind ViewModel.AuditLogs, Mode=OneWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:LogEntry">

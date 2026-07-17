@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Dtrl.Models;
+namespace NXG.Models;
 
 public class HardwareMetrics
 {
@@ -30,6 +30,9 @@ public class HardwareMetrics
     
     public string OsVersionName { get; set; } = "Windows 11";
     public string OsBuild { get; set; } = "Unknown";
+
+    public bool IsGpuUsageEstimated { get; set; }
+    public bool IsCpuTempEstimated { get; set; }
 }
 
 public class StorageDriveInfo
@@ -41,5 +44,21 @@ public class StorageDriveInfo
     public double FreeSpaceGb { get; set; }
     public int SmartStatus { get; set; } = 1; // 1 = OK, 0 = Failing, -1 = Unsupported
     public string SmartStatusMessage { get; set; } = "OK";
-    public double Temperature { get; set; }
+    public double? Temperature { get; set; }
+
+    public string TemperatureText => Temperature.HasValue && Temperature.Value >= 0 
+        ? $"Temp: {Temperature.Value:F1}°C" 
+        : "Temp: N/A";
+
+    public bool IsTemperatureAvailable => Temperature.HasValue && Temperature.Value >= 0;
+    
+    public Microsoft.UI.Xaml.Visibility TemperatureVisibility => 
+        IsTemperatureAvailable ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    public Microsoft.UI.Xaml.Media.Brush SmartStatusBrush => SmartStatus switch
+    {
+        1 => (Microsoft.UI.Xaml.Media.Brush)Microsoft.UI.Xaml.Application.Current.Resources["NXGSuccessBrush"],
+        0 => (Microsoft.UI.Xaml.Media.Brush)Microsoft.UI.Xaml.Application.Current.Resources["NXGDangerBrush"],
+        _ => (Microsoft.UI.Xaml.Media.Brush)Microsoft.UI.Xaml.Application.Current.Resources["NXGInkDimBrush"]
+    };
 }

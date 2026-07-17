@@ -1,10 +1,10 @@
 using System;
 using Microsoft.UI.Xaml.Controls;
-using Dtrl.Views;
-using Dtrl.ViewModels;
+using NXG.Views;
+using NXG.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dtrl;
+namespace NXG;
 
 public sealed partial class MainPage : Page
 {
@@ -25,14 +25,14 @@ public sealed partial class MainPage : Page
             if (args.IsSettingsSelected)
             {
                 ContentFrame.Navigate(typeof(SettingsPage));
-                sender.Header = "OptiLuna Settings";
+                sender.Header = "NXG Settings";
                 return;
             }
 
             if (args.SelectedItemContainer != null)
             {
                 string tag = args.SelectedItemContainer.Tag.ToString() ?? "Dashboard";
-                sender.Header = $"OptiLuna - {args.SelectedItemContainer.Content}";
+                sender.Header = $"NXG - {args.SelectedItemContainer.Content}";
 
                 Type pageType = tag switch
                 {
@@ -65,32 +65,32 @@ public sealed partial class MainPage : Page
         if (query.Contains("tweak") || query.Contains("optimize"))
         {
             ContentFrame.Navigate(typeof(TweaksPage));
-            NavView.Header = "OptiLuna - System Tweaks";
+            NavView.Header = "NXG - System Tweaks";
         }
         else if (query.Contains("hard") || query.Contains("cpu") || query.Contains("gpu") || query.Contains("ram"))
         {
             ContentFrame.Navigate(typeof(HardwarePage));
-            NavView.Header = "OptiLuna - Hardware Monitor";
+            NavView.Header = "NXG - Hardware Monitor";
         }
         else if (query.Contains("network") || query.Contains("ping") || query.Contains("dns"))
         {
             ContentFrame.Navigate(typeof(NetworkPage));
-            NavView.Header = "OptiLuna - Network Diagnostics";
+            NavView.Header = "NXG - Network Diagnostics";
         }
         else if (query.Contains("clean") || query.Contains("storage") || query.Contains("temp") || query.Contains("space"))
         {
             ContentFrame.Navigate(typeof(StoragePage));
-            NavView.Header = "OptiLuna - Storage Clean & Map";
+            NavView.Header = "NXG - Storage Clean & Map";
         }
         else if (query.Contains("bench"))
         {
             ContentFrame.Navigate(typeof(BenchmarkPage));
-            NavView.Header = "OptiLuna - Benchmarks";
+            NavView.Header = "NXG - Benchmarks";
         }
         else if (query.Contains("restore") || query.Contains("recovery") || query.Contains("undo"))
         {
             ContentFrame.Navigate(typeof(RecoveryPage));
-            NavView.Header = "OptiLuna - Restore & Undo";
+            NavView.Header = "NXG - Restore & Undo";
         }
     }
 }

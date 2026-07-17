@@ -4,10 +4,10 @@ using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dtrl.Models;
-using Dtrl.Services;
+using NXG.Models;
+using NXG.Services;
 
-namespace Dtrl.ViewModels;
+namespace NXG.ViewModels;
 
 public partial class ProfilesViewModel : ObservableObject
 {
@@ -92,16 +92,16 @@ public partial class ProfilesViewModel : ObservableObject
         if (SelectedProfile == null) return;
 
         string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string dtrlDir = Path.Combine(appData, "DTRL", "Profiles");
-        Directory.CreateDirectory(dtrlDir);
-        string filePath = Path.Combine(dtrlDir, $"{SelectedProfile.Name.Replace(" ", "_")}.dtrl");
+        string nxgDir = Path.Combine(appData, "NXG", "Profiles");
+        Directory.CreateDirectory(nxgDir);
+        string filePath = Path.Combine(nxgDir, $"{SelectedProfile.Name.Replace(" ", "_")}.nxg");
 
         IsBusy = true;
         StatusText = $"Exporting profile to {filePath}...";
 
         bool result = await Task.Run(() => _profileService.ExportProfile(SelectedProfile, filePath));
         
-        StatusText = result ? $"Profile exported successfully to Documents/DTRL." : "Profile export failed.";
+        StatusText = result ? $"Profile exported successfully to Documents/NXG." : "Profile export failed.";
         IsBusy = false;
     }
 
@@ -111,7 +111,7 @@ public partial class ProfilesViewModel : ObservableObject
         // For CLI simulation, we import a simulated profile path.
         // In actual UI, FileOpenPicker will resolve the path.
         string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string filePath = Path.Combine(appData, "DTRL", "Profiles", "Custom.dtrl");
+        string filePath = Path.Combine(appData, "NXG", "Profiles", "Custom.nxg");
 
         if (!File.Exists(filePath))
         {

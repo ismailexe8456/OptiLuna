@@ -1,8 +1,8 @@
 using Microsoft.UI.Xaml.Controls;
-using Dtrl.ViewModels;
+using NXG.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dtrl.Views;
+namespace NXG.Views;
 
 public sealed partial class DashboardPage : Page
 {

@@ -1,10 +1,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Dtrl.Models;
-using Dtrl.ViewModels;
+using NXG.Models;
+using NXG.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dtrl.Views;
+namespace NXG.Views;
 
 public sealed partial class ProfilesPage : Page
 {

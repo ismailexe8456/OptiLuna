@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
-using Dtrl.Models;
-using Dtrl.Helpers;
+using NXG.Models;
+using NXG.Helpers;
 
-namespace Dtrl.Services;
+namespace NXG.Services;
 
 public class TweakService : ITweakService
 {
@@ -82,15 +82,27 @@ public class TweakService : ITweakService
 
         try
         {
-            if (tweak.TargetType == "Registry")
+            if (tweak.TargetType == "Registry" || tweak.TargetType == "Service")
             {
-                WriteRegistryValue(tweak.RegistryHive, tweak.RegistryPath, tweak.RegistryValueName, tweak.UndoValue, tweak.RegistryType);
-                tweak.IsApplied = false;
-            }
-            else if (tweak.TargetType == "Service")
-            {
-                string serviceRegPath = $@"SYSTEM\CurrentControlSet\Services\{tweak.ServiceName}";
-                WriteRegistryValue("HKLM", serviceRegPath, "Start", tweak.UndoStartupType, "DWord");
+                if (_recovery.RestoreLastBackup(tweak.Id))
+                {
+                    tweak.IsApplied = false;
+                    _logger.Log("Tweak Reverted", $"Successfully reverted tweak '{tweak.Name}' via restore backup", "Rollback", tweak.Id);
+                    return true;
+                }
+
+                // Fallback
+                _logger.LogWarning("Revert Fallback", $"Backup entry not found for tweak '{tweak.Id}'. Using fallback value.");
+
+                if (tweak.TargetType == "Registry")
+                {
+                    WriteRegistryValue(tweak.RegistryHive, tweak.RegistryPath, tweak.RegistryValueName, tweak.UndoValue, tweak.RegistryType);
+                }
+                else if (tweak.TargetType == "Service")
+                {
+                    string serviceRegPath = $@"SYSTEM\CurrentControlSet\Services\{tweak.ServiceName}";
+                    WriteRegistryValue("HKLM", serviceRegPath, "Start", tweak.UndoStartupType, "DWord");
+                }
                 tweak.IsApplied = false;
             }
             else if (tweak.TargetType == "Shell")
