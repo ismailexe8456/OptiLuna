@@ -17,8 +17,8 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 ; Request admin privileges for installation since it writes to Program Files and registers services
-PrivilegeRequired=admin
-PrivilegeRequiredOverridesAllowed=dialog
+PrivilegesRequired=admin
+PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=.
 OutputBaseFilename=NXG-Setup
 SetupIconFile=..\NXG.ico
